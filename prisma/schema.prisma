@@ -1,0 +1,130 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum PricingType {
+  FREE
+  FREEMIUM
+  PAID
+}
+
+model User {
+  id            String     @id @default(cuid())
+  email         String     @unique
+  name          String?
+  image         String?
+  tools         Tool[]
+  favorites     Favorite[]
+  createdAt     DateTime   @default(now())
+  emailVerified Boolean    @default(false)
+  updatedAt     DateTime   @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+model Tool {
+  id            String      @id @default(cuid())
+  title         String
+  description   String?     @db.Text
+  url           String      @unique
+  pricing       PricingType @default(FREE)
+  categoryId    String
+  category      Category    @relation(fields: [categoryId], references: [id])
+  subCategoryId String
+  subCategory   SubCategory @relation(fields: [subCategoryId], references: [id])
+
+  votes     Int     @default(0) // Para el ranking
+  published Boolean @default(false) // Para moderación
+
+  stack     Technology[] // Muchos a muchos con Technology
+  userId    String
+  user      User         @relation(fields: [userId], references: [id])
+  favorites Favorite[]
+  createdAt DateTime     @default(now())
+}
+
+model Category {
+  id            String        @id @default(cuid())
+  name          String        @unique
+  tools         Tool[]
+  subCategories SubCategory[]
+}
+
+model SubCategory {
+  id         String   @id @default(cuid())
+  name       String   @unique
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+  tools      Tool[]
+}
+
+model Technology {
+  id    String @id @default(cuid())
+  name  String @unique
+  tools Tool[]
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  userId    String
+  toolId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tool      Tool     @relation(fields: [toolId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, toolId])
+}
