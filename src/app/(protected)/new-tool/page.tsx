@@ -94,7 +94,7 @@ export default function NewToolPage() {
 						<FormStepper step={step} />
 
 						<Card className="relative overflow-hidden group border-white/5 bg-card/50 backdrop-blur-xl shadow-2xl">
-							<div className="absolute -top-24 -right-24 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none group-hover:bg-primary/20 transition-colors duration-700"></div>
+							{/* <div className="absolute -top-24 -right-24 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none group-hover:bg-primary/20 transition-colors duration-700"></div> */}
 							<CardContent className="p-6 md:p-10 relative z-10">
 								{step === 1 && (
 									<StepInfo formData={formData} onChange={handleChange} onNext={() => setStep(2)} />

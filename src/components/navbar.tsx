@@ -21,8 +21,7 @@ export default function Navbar() {
 		<nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
 			<div className="container mx-auto flex h-16 items-center justify-between px-4">
 				<Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tight">
-					<span className="bg-primary text-primary-foreground px-2 py-1 rounded-md">U</span>
-					usedevtools
+					usedevtools.
 				</Link>
 
 				<div className="flex items-center gap-4">
@@ -30,6 +29,12 @@ export default function Navbar() {
 						<div className="h-9 w-24 animate-pulse rounded-md bg-muted" />
 					) : session ? (
 						<div className="flex items-center gap-4">
+							<Button variant="outline" size="sm" asChild>
+								<Link href="https://github.com/jf-arce/usedevtools" target="_blank">
+									<Github />
+								</Link>
+							</Button>
+
 							<Button variant="outline" size="sm" asChild className="hidden sm:flex">
 								<Link href="/new-tool">
 									<PlusCircle className="mr-2 h-4 w-4" />

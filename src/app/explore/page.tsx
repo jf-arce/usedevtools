@@ -63,7 +63,7 @@ export default async function ExplorePage({ searchParams }: ExplorePageProps) {
 				technologies={technologies}
 			/>
 
-			<main className="flex-1 min-w-0 bg-neutral-950 flex flex-col">
+			<main className="flex-1 min-w-0 bg-background flex flex-col">
 				<div className="mx-auto px-6 py-4 gap-6 flex flex-col flex-1 min-h-0 w-full">
 					<ExploreSearch />
 

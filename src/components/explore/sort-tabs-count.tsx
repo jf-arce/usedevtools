@@ -37,7 +37,7 @@ export const SortTabsCount = ({ totalTools }: { totalTools: number }) => {
 							<Button
 								key={option.value}
 								onClick={() => handleSortChange(option.value)}
-								variant={currentSort === option.value ? "outline" : "ghost"}
+								variant={currentSort === option.value ? "default" : "ghost"}
 								size="icon"
 								title={option.label}
 							>

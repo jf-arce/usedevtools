@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Star, ArrowRight, Heart, ThumbsUp, Link2, Globe } from "lucide-react";
+import { ArrowRight, Heart, ThumbsUp, Link2, Globe } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { PricingType } from "@prisma/client";
@@ -16,6 +16,7 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { useGetFaviconUrl } from "@/hooks/use-get-favicon-url";
 
 interface ToolCardProps {
 	tool: {
@@ -39,21 +40,9 @@ export function ToolCard({ tool }: ToolCardProps) {
 	const [isVoting, setIsVoting] = useState(false);
 	const [isFavoriting, setIsFavoriting] = useState(false);
 	const [showLoginDialog, setShowLoginDialog] = useState(false);
-	const [logoError, setLogoError] = useState(false);
+	const { faviconUrl, logoError, setLogoError } = useGetFaviconUrl(tool.url);
 
 	const iconLetter = tool.title.charAt(0).toUpperCase();
-
-	// Extract domain from URL to fetch favicon
-	const getFaviconUrl = (url: string) => {
-		try {
-			const domain = new URL(url).hostname;
-			return `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
-		} catch {
-			return null;
-		}
-	};
-
-	const faviconUrl = getFaviconUrl(tool.url);
 
 	const handleVote = async (e: React.MouseEvent) => {
 		e.preventDefault();
@@ -143,23 +132,17 @@ export function ToolCard({ tool }: ToolCardProps) {
 				</CardContent>
 				<CardFooter className="flex items-center justify-between p-6 pt-0">
 					<div className="flex items-center gap-2">
-						<Button
-							asChild
-							variant="outline"
-							size="sm"
-							className="text-zinc-500 hover:text-indigo-400"
-						>
-							<Link href={tool.url} target="_blank">
+						<Button asChild variant="outline">
+							<Link href={tool.url} target="_blank" className="hover:text-indigo-400">
 								<Globe />
 							</Link>
 						</Button>
 						<Button
 							onClick={handleVote}
 							disabled={isVoting}
-							className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all cursor-pointer group/vote text-sm ${
-								hasVoted
-									? "border-indigo-500/50 bg-indigo-500/10 text-indigo-400"
-									: "border-neutral-800 bg-neutral-900 text-neutral-400 hover:text-indigo-400 hover:border-indigo-500/50"
+							variant="outline"
+							className={`flex hover:text-indigo-400 items-center gap-2 px-3 py-1.5 border transition-all cursor-pointer group/vote text-sm ${
+								hasVoted && "border-indigo-500/50 bg-indigo-500/10 text-indigo-400"
 							}`}
 						>
 							<ThumbsUp

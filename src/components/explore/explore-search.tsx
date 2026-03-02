@@ -37,7 +37,7 @@ export function ExploreSearch() {
 		<div className="flex flex-col gap-5 w-full">
 			{/* Search Bar */}
 			<div className="relative w-full group">
-				<Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-zinc-500 group-focus-within:text-indigo-400 transition-colors z-10" />
+				<Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4.5 w-4.5 z-10" />
 				<Input
 					type="text"
 					placeholder="Search for tools, frameworks, and libraries..."
@@ -45,10 +45,10 @@ export function ExploreSearch() {
 					onChange={(e) => setSearch(e.target.value)}
 					className="w-full pl-11 pr-16 h-12 text-sm"
 				/>
-				<div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 px-2 py-1 rounded-md bg-zinc-800/80 border border-zinc-700/50 text-zinc-500">
+				{/* <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 px-2 py-1 rounded-md bg-zinc-800/80 border border-zinc-700/50 text-zinc-500">
 					<Command className="h-3 w-3" />
 					<span className="text-[10px] font-medium">K</span>
-				</div>
+				</div> */}
 			</div>
 		</div>
 	);

@@ -12,12 +12,16 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { NewTool } from "@/types/tool";
+import Image from "next/image";
+import { useGetFaviconUrl } from "@/hooks/use-get-favicon-url";
 
 interface PreviewSidebarProps {
 	formData: NewTool;
 }
 
 export function PreviewSidebar({ formData }: PreviewSidebarProps) {
+	const { faviconUrl, logoError, setLogoError } = useGetFaviconUrl(formData.url);
+
 	return (
 		<div className="sticky top-24 space-y-8">
 			<div className="space-y-4">
@@ -26,14 +30,28 @@ export function PreviewSidebar({ formData }: PreviewSidebarProps) {
 					Vista Previa
 				</h3>
 
-				<div className="group relative rounded-3xl bg-card border border-white/5 p-6 transition-all hover:border-primary/30 hover:shadow-[0_20px_50px_rgba(139,92,246,0.1)] overflow-hidden">
+				<div className="group relative rounded-3xl bg-card border border-white/5 p-6 transition-all hover:border-primary/30 overflow-hidden">
 					<div className="absolute inset-0 bg-linear-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
 					<div className="flex items-start justify-between mb-5 relative z-10">
 						<div className="flex items-center gap-4">
-							<div className="h-14 w-14 rounded-2xl bg-black/40 border border-white/10 flex items-center justify-center overflow-hidden shadow-inner group-hover:scale-105 transition-transform duration-500">
-								<Terminal className="h-7 w-7 text-primary" />
-							</div>
+							{faviconUrl && !logoError ? (
+								<div className="h-14 w-14 rounded-xl bg-linear-to-br text-xl font-bold text-white shadow-lg overflow-hidden">
+									<Image
+										src={faviconUrl}
+										alt={`${formData.title} logo`}
+										width={48}
+										height={48}
+										className="h-full w-full object-contain p-1.5 rounded-xl"
+										onError={() => setLogoError(true)}
+										unoptimized
+									/>
+								</div>
+							) : (
+								<div className="h-14 w-14 rounded-2xl bg-black/40 border border-white/10 flex items-center justify-center overflow-hidden shadow-inner group-hover:scale-105 transition-transform duration-500">
+									<Terminal className="h-7 w-7 text-primary" />
+								</div>
+							)}
 							<div>
 								<h4 className="text-xl font-black text-foreground leading-tight tracking-tight">
 									{formData.title || "Tu Herramienta"}
