@@ -2,27 +2,21 @@ import { db } from "@/lib/db";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Spotlight } from "@/components/ui/spotlight";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import { GridBackground } from "@/components/ui/grid-background";
 import { Footer } from "@/components/footer";
 import {
 	Search,
-	Code,
-	Database,
-	Cloud,
-	Cpu,
-	Brush,
 	Zap,
 	Layers,
 	Sparkles,
-	Github,
 	Terminal,
 	MousePointer2,
 	ChevronRight,
 	ExternalLink,
 	Monitor,
-	Bookmark,
+	Brush,
+	Cpu,
 } from "lucide-react";
 
 export default async function Home() {
@@ -43,70 +37,149 @@ export default async function Home() {
 			{/* Hero Section */}
 			<section
 				id="home-hero"
-				className="relative h-[calc(100vh-4rem)] flex flex-col items-center justify-center overflow-hidden"
+				className="relative min-h-[calc(100vh-4rem)] flex items-center overflow-hidden"
 			>
-				{/* <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="oklch(0.65 0.2 280)" /> */}
-
-				<div className="container relative z-10 text-center max-w-7xl mx-auto flex flex-col items-center">
-					<div
-						className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 text-primary text-[10px] sm:text-xs font-bold mb-8 animate-fade-in uppercase tracking-wider backdrop-blur-sm"
-						id="version-badge"
-					>
-						<div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-						<span>v2.0 is live! Discover curated developer resources</span>
-					</div>
-
-					<h1 className="text-5xl md:text-8xl font-black tracking-tight mb-8 animate-slide-up leading-[0.9] text-balance">
-						Discover the best <br />
-						<span className="bg-linear-to-b from-primary via-primary to-accent bg-clip-text text-transparent italic">
-							developer tools.
-						</span>
-					</h1>
-
-					<p className="text-lg md:text-xl text-muted-foreground/70 max-w-2xl mx-auto mb-12 animate-slide-up [animation-delay:0.1s] leading-relaxed">
-						Hand-picked resources to supercharge your workflow. Find the perfect library, SaaS, or
-						utility for your next big project.
-					</p>
-
-					{/* Search Bar */}
-					<div className="w-full max-w-2xl relative mb-12 group animate-slide-up [animation-delay:0.2s]">
-						<div className="absolute inset-0 bg-primary/20 rounded-2xl blur-xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-300" />
-						<div className="relative flex items-center bg-card/60 border border-white/10 p-2 rounded-2xl backdrop-blur-xl group-focus-within:border-primary/50 transition-all">
-							<Search className="h-5 w-5 text-muted-foreground ml-3" />
-							<input
-								type="text"
-								placeholder="Search for 'databases', 'hosting', or 'AI'..."
-								className="flex-1 bg-transparent border-none outline-none px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50"
-							/>
-							<kbd className="hidden sm:inline-flex h-8 items-center gap-1 rounded border border-white/10 bg-white/5 px-2 font-mono text-[10px] font-medium text-muted-foreground opacity-100 mr-2">
-								<span className="text-xs">⌘</span>K
-							</kbd>
-						</div>
-					</div>
-
-					{/* Quick Filters */}
-					<div className="flex flex-wrap justify-center gap-3 animate-slide-up [animation-delay:0.3s]">
-						{[
-							{ icon: <Code className="h-4 w-4" />, label: "Frontend" },
-							{ icon: <Database className="h-4 w-4" />, label: "Backend" },
-							{ icon: <Cloud className="h-4 w-4" />, label: "DevOps" },
-							{ icon: <Cpu className="h-4 w-4" />, label: "AI Tools" },
-							{ icon: <Brush className="h-4 w-4" />, label: "Design" },
-						].map((item, i) => (
-							<button
-								key={i}
-								className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/5 bg-white/5 hover:bg-white/10 hover:border-primary/20 hover:text-primary transition-all text-sm font-medium text-muted-foreground group"
+				<div className="container relative z-10 max-w-7xl mx-auto px-4">
+					<div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+						{/* Left Side - Content */}
+						<div className="space-y-8 animate-fade-in">
+							<div
+								className="inline-flex items-center gap-2 px-3 py-1 rounded-md border border-border bg-muted/50 text-muted-foreground text-xs font-mono"
+								id="version-badge"
 							>
-								<span className="text-muted-foreground group-hover:text-primary transition-colors">
-									{item.icon}
-								</span>
-								{item.label}
-							</button>
-						))}
+								<div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+								v2.0 — open source
+							</div>
+
+							<div className="space-y-4">
+								<h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-[1.1]">
+									Find the right tool.
+									<br />
+									<span className="text-indigo-400">Ship faster.</span>
+								</h1>
+								<p className="text-lg text-muted-foreground max-w-md leading-relaxed">
+									A curated catalog of developer tools, libraries, and services. Search, compare,
+									and pick what fits your stack.
+								</p>
+							</div>
+
+							{/* Search + Explore */}
+							<div className="space-y-3 max-w-lg">
+								<div className="flex items-center gap-2">
+									<div className="relative flex-1 group">
+										<Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+										<input
+											type="text"
+											placeholder="Search tools..."
+											className="w-full h-11 pl-10 pr-4 rounded-lg border border-border bg-background text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-ring/40 focus:border-ring transition-all"
+										/>
+									</div>
+									<Button asChild className="h-11 px-5 rounded-lg font-semibold shrink-0">
+										<Link href="/explore">
+											Explore
+											<ChevronRight className="h-4 w-4 ml-1" />
+										</Link>
+									</Button>
+								</div>
+								<div className="flex items-center gap-2 flex-wrap">
+									{["Frontend", "Backend", "DevOps", "AI", "Design"].map((tag) => (
+										<Link
+											key={tag}
+											href={`/explore?q=${tag.toLowerCase()}`}
+											className="px-2.5 py-1 rounded-md border border-border text-xs text-muted-foreground hover:text-foreground hover:border-foreground/20 transition-colors"
+										>
+											{tag}
+										</Link>
+									))}
+								</div>
+							</div>
+
+							{/* Stats */}
+							<div className="flex items-center gap-8 pt-4">
+								<div>
+									<div className="text-2xl font-bold tabular-nums">{tools.length * 50}+</div>
+									<div className="text-xs text-muted-foreground">Tools listed</div>
+								</div>
+								<div className="w-px h-8 bg-border" />
+								<div>
+									<div className="text-2xl font-bold tabular-nums">12</div>
+									<div className="text-xs text-muted-foreground">Categories</div>
+								</div>
+								<div className="w-px h-8 bg-border" />
+								<div>
+									<div className="text-2xl font-bold tabular-nums">100%</div>
+									<div className="text-xs text-muted-foreground">Free & open</div>
+								</div>
+							</div>
+						</div>
+
+						{/* Right Side - Visual */}
+						<div className="hidden lg:block animate-slide-up">
+							<div className="relative">
+								{/* Decorative glow */}
+								<div className="absolute -inset-4 bg-linear-to-br from-primary/5 via-transparent to-primary/5 rounded-3xl blur-2xl" />
+
+								{/* Terminal-like card */}
+								<div className="relative border border-border rounded-2xl bg-card overflow-hidden shadow-2xl shadow-black/20">
+									{/* Title bar */}
+									<div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/30">
+										<div className="flex gap-1.5">
+											<div className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
+											<div className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
+											<div className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
+										</div>
+										<span className="text-xs text-muted-foreground font-mono ml-2">
+											usedevtools — catalog
+										</span>
+									</div>
+
+									{/* Content */}
+									<div className="p-5 space-y-3">
+										{tools.slice(0, 5).map((tool, i) => (
+											<div
+												key={tool.id}
+												className="flex items-center gap-3 p-3 rounded-lg border border-border/50 hover:border-border hover:bg-muted/30 transition-all group"
+											>
+												<div className="w-8 h-8 rounded-md bg-muted flex items-center justify-center shrink-0">
+													<Terminal className="h-4 w-4 text-muted-foreground" />
+												</div>
+												<div className="flex-1 min-w-0">
+													<div className="flex items-center gap-2">
+														<span className="text-sm font-medium truncate group-hover:text-foreground transition-colors">
+															{tool.title}
+														</span>
+														<Badge
+															variant="secondary"
+															className="text-[10px] px-1.5 py-0 h-4 shrink-0"
+														>
+															{tool.category.name}
+														</Badge>
+													</div>
+													<p className="text-xs text-muted-foreground truncate mt-0.5">
+														{tool.description}
+													</p>
+												</div>
+												<ExternalLink className="h-3.5 w-3.5 text-muted-foreground/50 opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
+											</div>
+										))}
+
+										{/* More indicator */}
+										<div className="flex items-center justify-center pt-1">
+											<Link
+												href="/explore"
+												className="text-xs text-muted-foreground hover:text-foreground transition-colors font-medium flex items-center gap-1"
+											>
+												View all tools <ChevronRight className="h-3 w-3" />
+											</Link>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 
-				<div className="absolute bottom-0 left-0 w-full h-40 bg-linear-to-t from-background via-background/80 to-transparent" />
+				<div className="absolute bottom-0 left-0 w-full h-24 bg-linear-to-t from-background to-transparent" />
 			</section>
 
 			{/* Tools Bento Grid Section */}

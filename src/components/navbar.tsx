@@ -36,9 +36,9 @@ export default function Navbar() {
 							</Button>
 
 							<Button variant="outline" size="sm" asChild className="hidden sm:flex">
-								<Link href="/new-tool">
-									<PlusCircle className="mr-2 h-4 w-4" />
-									Subir Tool
+								<Link href="/new-tool" className="flex">
+									<PlusCircle />
+									Add Tool
 								</Link>
 							</Button>
 

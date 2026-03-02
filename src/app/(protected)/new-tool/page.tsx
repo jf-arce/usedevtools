@@ -73,7 +73,7 @@ export default function NewToolPage() {
 
 	return (
 		<main className="min-h-screen bg-background text-foreground antialiased relative overflow-hidden font-sans">
-			<div className="container mx-auto px-4 py-8 md:py-16 lg:px-8 max-w-7xl relative z-10">
+			<div className="container mx-auto px-4 py-8 md:py-16 max-w-7xl relative z-10">
 				<div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
 					<div className="lg:col-span-7 xl:col-span-8 flex flex-col gap-10">
 						<div className="space-y-4">
