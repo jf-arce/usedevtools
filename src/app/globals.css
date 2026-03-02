@@ -38,6 +38,8 @@
 	--sidebar-accent-foreground: oklch(14.5% 0 0);
 	--sidebar-border: oklch(0.922 0 0);
 	--sidebar-ring: oklch(0.708 0 0);
+	--tertiary: oklch(67.3% 0.182 276.935);
+	--tertiary-foreground: oklch(0.145 0 0);
 }
 
 @theme inline {
@@ -81,6 +83,9 @@
 	--radius-2xl: calc(var(--radius) + 8px);
 	--radius-3xl: calc(var(--radius) + 12px);
 	--radius-4xl: calc(var(--radius) + 16px);
+
+	--color-tertiary: var(--tertiary);
+	--color-tertiary-foreground: var(--tertiary-foreground);
 
 	/* Custom Animations */
 	--animate-spotlight: spotlight 2s ease 1 forwards;

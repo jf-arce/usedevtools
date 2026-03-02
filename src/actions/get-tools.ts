@@ -133,3 +133,30 @@ export async function getAllTechnologies() {
 		select: { id: true, name: true },
 	});
 }
+
+export async function getFeaturedTools(limit = 8) {
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
+
+	const userId = session?.user?.id;
+
+	const tools = await db.tool.findMany({
+		where: { published: true },
+		include: {
+			category: { select: { name: true } },
+			subCategory: { select: { name: true } },
+			stack: { select: { name: true } },
+			...(userId && {
+				favorites: { where: { userId } },
+			}),
+		},
+		orderBy: { votes: "desc" },
+		take: limit,
+	});
+
+	return tools.map((tool) => ({
+		...tool,
+		isFavorite: "favorites" in tool && Array.isArray(tool.favorites) && tool.favorites.length > 0,
+	}));
+}
