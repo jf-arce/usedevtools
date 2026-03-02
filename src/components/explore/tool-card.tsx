@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Heart, ThumbsUp, Link2, Globe } from "lucide-react";
+import { ArrowRight, Heart, ThumbsUp, Globe } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { PricingType } from "@prisma/client";
@@ -17,6 +17,9 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useGetFaviconUrl } from "@/hooks/use-get-favicon-url";
+import { GithubLight } from "../ui/svgs/githubLight";
+import { signIn } from "@/lib/auth-client";
+import { Loader } from "../loader";
 
 interface ToolCardProps {
 	tool: {
@@ -43,6 +46,18 @@ export function ToolCard({ tool }: ToolCardProps) {
 	const { faviconUrl, logoError, setLogoError } = useGetFaviconUrl(tool.url);
 
 	const iconLetter = tool.title.charAt(0).toUpperCase();
+
+	const [signInLoading, setSignInLoading] = useState(false);
+
+	const handleGithubSignIn = async () => {
+		setSignInLoading(true);
+		try {
+			await signIn.social({ provider: "github" });
+		} catch (err) {
+			console.error("GitHub sign-in failed", err);
+			setSignInLoading(false);
+		}
+	};
 
 	const handleVote = async (e: React.MouseEvent) => {
 		e.preventDefault();
@@ -173,10 +188,17 @@ export function ToolCard({ tool }: ToolCardProps) {
 					</DialogHeader>
 					<div className="flex flex-col gap-4 mt-4">
 						<Button
-							className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold uppercase tracking-widest text-xs h-12"
-							onClick={() => (window.location.href = "/login")} // Update with your actual login route
+							className="font-bold uppercase tracking-widest text-xs h-12"
+							onClick={handleGithubSignIn}
 						>
-							Log In / Sign Up
+							{signInLoading ? (
+								<Loader />
+							) : (
+								<>
+									<GithubLight className="h-5 w-5 mr-2" />
+									Continue with GitHub
+								</>
+							)}
 						</Button>
 						<Button
 							variant="ghost"

@@ -12,11 +12,25 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LogOut, PlusCircle, LayoutDashboard, Github, Terminal } from "lucide-react";
+import { LogOut, PlusCircle, LayoutDashboard, Layers } from "lucide-react";
 import { UseDevToolsIcon } from "./icons";
+import { GithubDark } from "./ui/svgs/githubDark";
+import { Loader } from "./loader";
+import { useState } from "react";
 
 export default function Navbar() {
 	const { data: session, isPending } = useSession();
+	const [signInLoading, setSignInLoading] = useState(false);
+
+	const handleGithubSignIn = async () => {
+		setSignInLoading(true);
+		try {
+			await signIn.social({ provider: "github" });
+		} catch (err) {
+			console.error("GitHub sign-in failed", err);
+			setSignInLoading(false);
+		}
+	};
 
 	return (
 		<nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
@@ -31,21 +45,36 @@ export default function Navbar() {
 
 				<div className="flex items-center gap-4">
 					{isPending ? (
-						<div className="h-9 w-24 animate-pulse rounded-md bg-muted" />
+						<div className="flex items-center gap-4">
+							<div className="flex gap-2">
+								<div className="h-9 w-9 rounded-md bg-muted/60 animate-pulse" />
+								<div className="h-9 w-24 rounded-md bg-muted/60 animate-pulse" />
+							</div>
+							<div className="h-9 w-32 rounded-md bg-muted/60 animate-pulse" />
+						</div>
 					) : session ? (
 						<div className="flex items-center gap-4">
-							<Button variant="outline" size="sm" asChild>
+							<Button variant="ghost" asChild>
 								<Link href="https://github.com/jf-arce/usedevtools" target="_blank">
-									<Github />
+									<GithubDark />
 								</Link>
 							</Button>
 
-							<Button variant="outline" size="sm" asChild className="hidden sm:flex">
-								<Link href="/new-tool" className="flex">
-									<PlusCircle />
-									Add Tool
-								</Link>
-							</Button>
+							<div className="flex gap-2">
+								<Button variant="outline" asChild>
+									<Link href="/explore" className="flex items-center gap-2">
+										<Layers />
+										Explore
+									</Link>
+								</Button>
+
+								<Button variant="outline" asChild className="hidden sm:flex">
+									<Link href="/new-tool" className="flex items-center gap-2">
+										<PlusCircle />
+										Add
+									</Link>
+								</Button>
+							</div>
 
 							<DropdownMenu>
 								<DropdownMenuTrigger asChild>
@@ -85,17 +114,30 @@ export default function Navbar() {
 						</div>
 					) : (
 						<div className="flex items-center gap-2">
-							<Button
-								variant="ghost"
-								size="sm"
-								onClick={() => signIn.social({ provider: "github" })}
-							>
-								<Github className="mr-2 h-4 w-4" />
-								GitHub
-							</Button>
-							<Button size="sm" onClick={() => signIn.social({ provider: "google" })}>
-								Empezar
-							</Button>
+							<div className="flex gap-2">
+								<Button variant="ghost" asChild>
+									<Link href="https://github.com/jf-arce/usedevtools" target="_blank">
+										<GithubDark />
+									</Link>
+								</Button>
+								<Button variant="ghost" asChild>
+									<Link href="/explore" className="flex items-center gap-2 font-semibold">
+										<Layers />
+										Explore
+									</Link>
+								</Button>
+							</div>
+							<div className="flex gap-2">
+								<Button
+									variant="default"
+									className="font-semibold"
+									onClick={handleGithubSignIn}
+									disabled={signInLoading}
+									aria-busy={signInLoading}
+								>
+									{signInLoading ? <Loader /> : "Continue with GitHub"}
+								</Button>
+							</div>
 						</div>
 					)}
 				</div>
