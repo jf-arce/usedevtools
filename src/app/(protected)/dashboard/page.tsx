@@ -14,7 +14,6 @@ export default async function DashboardPage() {
 
 	if (!session) redirect("/");
 
-	// Traemos solo las herramientas del usuario actual
 	const userTools = await db.tool.findMany({
 		where: { userId: session.user.id },
 		include: { category: true },
@@ -22,7 +21,7 @@ export default async function DashboardPage() {
 	});
 
 	return (
-		<div className="py-10 space-y-8">
+		<main className="py-10 space-y-8 container mx-auto px-4">
 			<div className="flex justify-between items-center">
 				<div>
 					<h1 className="text-3xl font-bold tracking-tight">Mi Panel</h1>
@@ -89,6 +88,6 @@ export default async function DashboardPage() {
 					</div>
 				)}
 			</div>
-		</div>
+		</main>
 	);
 }
