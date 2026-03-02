@@ -35,7 +35,7 @@ export default async function Home() {
 
 						<div className="relative z-10 space-y-10">
 							<div className="w-24 h-24 bg-primary/10 border border-primary/20 rounded-[2rem] flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-700 shadow-3xl shadow-primary/20">
-								<MousePointer2 className="h-12 w-12 text-primary" />
+								<MousePointer2 className="h-12 w-12 text-tertiary" />
 							</div>
 							<div className="space-y-4">
 								<h3 className="text-3xl md:text-5xl font-black tracking-tighter leading-tight">

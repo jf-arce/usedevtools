@@ -59,7 +59,7 @@ export const BentoGridItem = ({
 	return (
 		<div
 			className={cn(
-				"row-span-1 border rounded-[2.5rem] group/bento transition-all duration-500 backdrop-blur-xl flex flex-col justify-end overflow-hidden relative h-full",
+				"row-span-1 border rounded-3xl group/bento transition-all duration-500 backdrop-blur-xl flex flex-col justify-end overflow-hidden relative h-full",
 				isFeatured
 					? "border-primary/30 bg-card/60 shadow-xl shadow-primary/10 hover:shadow-2xl hover:shadow-primary/20 hover:border-primary/50"
 					: "border-white/10 bg-card/40 shadow-none hover:border-primary/40",
@@ -75,8 +75,8 @@ export const BentoGridItem = ({
 						className={cn(
 							"absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-700",
 							isFeatured
-								? "w-[80%] h-[80%] opacity-[0.20] group-hover/bento:opacity-[0.30] blur-xl group-hover/bento:blur-2xl"
-								: "w-[70%] h-[70%] opacity-[0.14] group-hover/bento:opacity-[0.22] blur-2xl group-hover/bento:blur-3xl",
+								? "w-[80%] h-[80%] opacity-[0.20] group-hover/bento:opacity-[0.30] blur-md group-hover/bento:blur-2xl"
+								: "w-[70%] h-[70%] opacity-[0.14] group-hover/bento:opacity-[0.22] blur-lg group-hover/bento:blur-3xl",
 						)}
 					>
 						<Image src={faviconUrl} alt="" fill className="object-contain" unoptimized />

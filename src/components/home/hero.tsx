@@ -17,7 +17,7 @@ export const Hero = ({ tools }: { tools: any[] }) => {
 							id="version-badge"
 						>
 							<div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-							v2.0 — open source
+							v1.0 — open source
 						</div>
 
 						<div className="space-y-4">

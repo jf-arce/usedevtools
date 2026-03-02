@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Terminal, Github, Twitter, Linkedin } from "lucide-react";
+import { Github, Twitter, Linkedin } from "lucide-react";
+import { UseDevToolsIcon } from "./icons";
 
 export const Footer = () => {
 	return (
@@ -8,8 +9,11 @@ export const Footer = () => {
 				<div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
 					<div className="col-span-1 md:col-span-2 space-y-4">
 						<Link href="/" className="flex items-center gap-2 group">
-							<Terminal className="h-6 w-6 text-primary group-hover:rotate-12 transition-transform" />
-							<span className="font-bold text-xl tracking-tight">UseDevTools</span>
+							<UseDevToolsIcon className="h-6 w-6" />
+							<div>
+								<span className="font-bold text-xl">UseDev</span>
+								<span className="font-bold text-xl text-tertiary">Tools.</span>
+							</div>
 						</Link>
 						<p className="text-muted-foreground max-w-sm text-sm leading-relaxed">
 							La plataforma definitiva para descubrir y compartir las herramientas que impulsan el

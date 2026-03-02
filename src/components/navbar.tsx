@@ -12,7 +12,8 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LogOut, PlusCircle, LayoutDashboard, Github } from "lucide-react";
+import { LogOut, PlusCircle, LayoutDashboard, Github, Terminal } from "lucide-react";
+import { UseDevToolsIcon } from "./icons";
 
 export default function Navbar() {
 	const { data: session, isPending } = useSession();
@@ -20,8 +21,12 @@ export default function Navbar() {
 	return (
 		<nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
 			<div className="container mx-auto flex h-16 items-center justify-between px-4">
-				<Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tight">
-					usedevtools.
+				<Link href="/" className="flex gap-1 items-center font-bold text-xl tracking-tight">
+					<UseDevToolsIcon className="h-6 w-6" />
+					<span>
+						UseDev
+						<span className="text-tertiary">Tools.</span>
+					</span>
 				</Link>
 
 				<div className="flex items-center gap-4">
