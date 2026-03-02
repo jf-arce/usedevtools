@@ -19,6 +19,7 @@ model User {
   image         String?
   tools         Tool[]
   favorites     Favorite[]
+  votes         Vote[]
   createdAt     DateTime   @default(now())
   emailVerified Boolean    @default(false)
   updatedAt     DateTime   @updatedAt
@@ -94,6 +95,7 @@ model Tool {
   userId    String
   user      User         @relation(fields: [userId], references: [id])
   favorites Favorite[]
+  voteItems Vote[]
   createdAt DateTime     @default(now())
 }
 
@@ -119,6 +121,17 @@ model Technology {
 }
 
 model Favorite {
+  id        String   @id @default(cuid())
+  userId    String
+  toolId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tool      Tool     @relation(fields: [toolId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, toolId])
+}
+
+model Vote {
   id        String   @id @default(cuid())
   userId    String
   toolId    String
