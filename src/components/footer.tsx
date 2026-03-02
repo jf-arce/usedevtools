@@ -4,7 +4,7 @@ import { UseDevToolsIcon } from "./icons";
 
 export const Footer = () => {
 	return (
-		<footer className="w-full border-t border-white/5 bg-background py-16">
+		<footer className="w-full border-t border-white/5 py-16 relative">
 			<div className="container px-4 mx-auto">
 				<div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
 					<div className="col-span-1 md:col-span-2 space-y-4">

@@ -113,8 +113,6 @@ export const Hero = ({ tools }: { tools: any[] }) => {
 					</div>
 				</div>
 			</div>
-
-			<div className="absolute bottom-0 left-0 w-full h-24 bg-linear-to-t from-background to-transparent" />
 		</section>
 	);
 };

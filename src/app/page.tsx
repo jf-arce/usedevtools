@@ -6,6 +6,7 @@ import { MousePointer2 } from "lucide-react";
 import { Hero } from "@/components/home/hero";
 import { ToolBentoGrid } from "@/components/home/tool-bento-grid";
 import { getFeaturedTools } from "@/actions/get-tools";
+import { BackgroundFading } from "@/components/home/background-fading";
 
 export default async function Home() {
 	const [featuredTools, communityTools] = await Promise.all([
@@ -24,7 +25,8 @@ export default async function Home() {
 	]);
 
 	return (
-		<main className="bg-background text-foreground font-sans antialiased overflow-x-hidden">
+		<main className="relative bg-background text-foreground font-sans antialiased overflow-x-hidden">
+			<BackgroundFading />
 			<Hero tools={communityTools} />
 			<ToolBentoGrid featuredTools={featuredTools} communityTools={communityTools} />
 			<section className="py-40 relative px-4">
