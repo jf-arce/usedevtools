@@ -1,4 +1,4 @@
-import { PricingType } from "@prisma/client";
+import { PricingType, Tool as PrismaTool } from "@prisma/client";
 
 export type NewTool = {
 	title: string;
