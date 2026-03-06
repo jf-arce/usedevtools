@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
-export async function toggleVote(toolId: string) {
+export async function toggleVoteAction(toolId: string) {
 	const session = await auth.api.getSession({
 		headers: await headers(),
 	});
@@ -57,7 +57,7 @@ export async function toggleVote(toolId: string) {
 	}
 }
 
-export async function toggleFavorite(toolId: string) {
+export async function toggleFavoriteAction(toolId: string) {
 	const session = await auth.api.getSession({
 		headers: await headers(),
 	});

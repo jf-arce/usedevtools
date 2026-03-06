@@ -6,7 +6,7 @@ import { ArrowRight, Heart, ThumbsUp, Globe } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { PricingType } from "@prisma/client";
-import { toggleVote, toggleFavorite } from "@/actions/tool-interactions";
+import { toggleVoteAction, toggleFavoriteAction } from "@/actions/tool-interactions";
 import { useState } from "react";
 import {
 	Dialog,
@@ -64,7 +64,7 @@ export function ToolCard({ tool }: ToolCardProps) {
 		if (isVoting) return;
 		setIsVoting(true);
 
-		const res = await toggleVote(tool.id);
+		const res = await toggleVoteAction(tool.id);
 		if (res.error) {
 			if (res.error.includes("logged in")) {
 				setShowLoginDialog(true);
@@ -81,7 +81,7 @@ export function ToolCard({ tool }: ToolCardProps) {
 		if (isFavoriting) return;
 		setIsFavoriting(true);
 
-		const res = await toggleFavorite(tool.id);
+		const res = await toggleFavoriteAction(tool.id);
 		if (res.error) {
 			if (res.error.includes("logged in")) {
 				setShowLoginDialog(true);

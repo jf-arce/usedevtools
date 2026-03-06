@@ -4,7 +4,7 @@ import { Sparkles, ChevronRight, Terminal } from "lucide-react";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { useState } from "react";
-import { toggleFavorite } from "@/actions/tool-interactions";
+import { toggleFavoriteAction } from "@/actions/tool-interactions";
 
 type FeaturedTool = {
 	id: string;
@@ -47,7 +47,7 @@ export const ToolBentoGrid = ({
 		if (favoritingIds.has(toolId)) return;
 		setFavoritingIds((prev) => new Set(prev).add(toolId));
 
-		const res = await toggleFavorite(toolId);
+		const res = await toggleFavoriteAction(toolId);
 		if (res.error) {
 			// Could show a login dialog here
 		} else if (res.success) {
