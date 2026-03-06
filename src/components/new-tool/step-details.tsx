@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { ArrowRight, Loader2 } from "lucide-react";
+import { TECH_STACK_OPTIONS } from "@/constants/tech-stack-options";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { NewTool, Category, SubCategory } from "@/types/tool";
@@ -24,143 +26,66 @@ import {
 	ComboboxValue,
 	useComboboxAnchor,
 } from "@/components/ui/combobox";
-import { useEffect, useState } from "react";
-import { getCategories } from "@/actions/get-categories";
-import { getSubCategories } from "@/actions/get-sub-categories";
+import { getSubCategories } from "@/data/get-sub-categories";
 import { PricingType } from "@prisma/client";
-
-const TECH_STACK_OPTIONS = [
-	"React",
-	"Next.js",
-	"Vue",
-	"Nuxt",
-	"Angular",
-	"Svelte",
-	"SvelteKit",
-	"Astro",
-	"Remix",
-	"Node.js",
-	"Express",
-	"Fastify",
-	"NestJS",
-	"Django",
-	"Flask",
-	"FastAPI",
-	"Ruby on Rails",
-	"Laravel",
-	"Spring Boot",
-	"Go",
-	"Rust",
-	"Elixir",
-	"Phoenix",
-	"TypeScript",
-	"JavaScript",
-	"Python",
-	"Java",
-	"C#",
-	".NET",
-	"PHP",
-	"PostgreSQL",
-	"MySQL",
-	"MongoDB",
-	"Redis",
-	"SQLite",
-	"Supabase",
-	"Firebase",
-	"Prisma",
-	"Drizzle",
-	"Docker",
-	"Kubernetes",
-	"AWS",
-	"Google Cloud",
-	"Azure",
-	"Vercel",
-	"Netlify",
-	"Cloudflare",
-	"Tailwind CSS",
-	"Sass",
-	"Styled Components",
-	"GraphQL",
-	"tRPC",
-	"REST API",
-	"WebSocket",
-	"Vite",
-	"Webpack",
-	"Turborepo",
-	"Bun",
-	"Deno",
-] as const;
+import { FormActionState } from "@/types/formActionState";
 
 interface StepDetailsProps {
-	formData: NewTool;
-	onChange: (
-		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
-	) => void;
-	onPricingChange: (value: PricingType) => void;
-	onCategoryChange: (category: Category) => void;
-	onSubCategoryChange: (subCategory: SubCategory) => void;
-	onAddStack: (tag: string) => void;
-	onRemoveStack: (tag: string) => void;
+	formState: FormActionState<NewTool>;
+	categories: Category[];
 	onBack: () => void;
 	onNext: () => void;
 }
 
-export function StepDetails({
-	formData,
-	onChange,
-	onPricingChange,
-	onCategoryChange,
-	onSubCategoryChange,
-	onAddStack,
-	onRemoveStack,
-	onBack,
-	onNext,
-}: StepDetailsProps) {
-	const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
+export function StepDetails({ formState, categories, onBack, onNext }: StepDetailsProps) {
 	const [subCategories, setSubCategories] = useState<{ id: string; name: string }[]>([]);
 	const [loadingSubCategories, setLoadingSubCategories] = useState(false);
 
-	useEffect(() => {
-		const fetchCategories = async () => {
-			const categories = await getCategories();
-			setCategories(categories);
-		};
-		fetchCategories().then(async () => {
-			if (formData.category) {
-				setLoadingSubCategories(true);
-				const subCategories = await getSubCategories(formData.category.id);
-				setSubCategories(subCategories);
-				setLoadingSubCategories(false);
-			}
-		});
-	}, []);
+	const [selectedCategory, setSelectedCategory] = useState({
+		id: formState.data?.category?.id ?? "",
+		name: formState.data?.category?.name ?? "",
+	});
+	const [selectedSubCategory, setSelectedSubCategory] = useState({
+		id: formState.data?.subCategory?.id ?? "",
+		name: formState.data?.subCategory?.name ?? "",
+	});
+	const [pricing, setPricing] = useState<PricingType>(formState.data?.pricing ?? PricingType.FREE);
+	const [stack, setStack] = useState<string[]>(formState.data?.stack ?? []);
 
 	const handleCategoryChange = async (value: string) => {
-		const selected = categories.find((c) => c.id === value);
-		if (selected) onCategoryChange(selected);
-
+		const found = categories.find((c) => c.id === value);
+		setSelectedCategory({ id: value, name: found?.name ?? "" });
+		setSelectedSubCategory({ id: "", name: "" });
 		setLoadingSubCategories(true);
-		const subCategories = await getSubCategories(value);
-		setSubCategories(subCategories);
+		const subs: SubCategory[] = await getSubCategories(value);
+		setSubCategories(subs);
 		setLoadingSubCategories(false);
 	};
 
 	const handleSubCategoryChange = (value: string) => {
-		const selected = subCategories.find((s) => s.id === value);
-		if (selected) onSubCategoryChange(selected);
+		const found = subCategories.find((s) => s.id === value);
+		setSelectedSubCategory({ id: value, name: found?.name ?? "" });
 	};
 
 	const anchor = useComboboxAnchor();
 
 	return (
-		<form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
+		<>
+			{/*Inputs para componentes no nativos*/}
+			<input type="hidden" name="categoryId" value={selectedCategory.id} />
+			<input type="hidden" name="categoryName" value={selectedCategory.name} />
+			<input type="hidden" name="subCategoryId" value={selectedSubCategory.id} />
+			<input type="hidden" name="subCategoryName" value={selectedSubCategory.name} />
+			<input type="hidden" name="pricing" value={pricing} />
+			<input type="hidden" name="stack" value={JSON.stringify(stack)} />
+
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 				<div className="space-y-3 group/input">
 					<label className="block text-sm font-bold text-muted-foreground group-focus-within/input:text-primary transition-colors uppercase tracking-wider">
 						Categoría
 					</label>
 					<div className="relative">
-						<Select required value={formData.category.id} onValueChange={handleCategoryChange}>
+						<Select required value={selectedCategory.id} onValueChange={handleCategoryChange}>
 							<SelectTrigger className="w-full h-14! px-5!">
 								<SelectValue placeholder="Select a category" />
 							</SelectTrigger>
@@ -190,7 +115,7 @@ export function StepDetails({
 					<div className="relative">
 						<Select
 							disabled={subCategories.length === 0}
-							value={formData.subCategory.id}
+							value={selectedSubCategory.id}
 							onValueChange={handleSubCategoryChange}
 						>
 							<SelectTrigger className="w-full h-14! px-5! disabled:hover:bg-input/30!">
@@ -226,12 +151,12 @@ export function StepDetails({
 								key={item}
 								className={cn(
 									"cursor-pointer flex-1 py-1 px-2 text-sm font-bold rounded-lg transition-all duration-300",
-									formData.pricing === item
+									pricing === item
 										? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
 										: "text-muted-foreground hover:bg-white/5",
 								)}
 								type="button"
-								onClick={() => onPricingChange(item)}
+								onClick={() => setPricing(item)}
 							>
 								{item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()}
 							</button>
@@ -247,14 +172,8 @@ export function StepDetails({
 						multiple
 						autoHighlight
 						items={TECH_STACK_OPTIONS}
-						value={formData.stack}
-						onValueChange={(values) => {
-							if (!values) return;
-							const added = (values as string[]).filter((v) => !formData.stack.includes(v));
-							const removed = formData.stack.filter((v) => !(values as string[]).includes(v));
-							added.forEach((tag) => onAddStack(tag));
-							removed.forEach((tag) => onRemoveStack(tag));
-						}}
+						value={stack}
+						onValueChange={(values) => setStack((values as string[]) ?? [])}
 					>
 						<ComboboxChips
 							ref={anchor}
@@ -263,13 +182,11 @@ export function StepDetails({
 							<ComboboxValue>
 								{(values) => (
 									<>
-										{(values as string[]).map((value: string) => (
+										{((values as string[]) ?? []).map((value: string) => (
 											<ComboboxChip key={value}>{value}</ComboboxChip>
 										))}
 										<ComboboxChipsInput
-											placeholder={
-												formData.stack.length === 0 ? "Busca tecnologías..." : "Añadir más..."
-											}
+											placeholder={stack.length === 0 ? "Busca tecnologías..." : "Añadir más..."}
 										/>
 									</>
 								)}
@@ -298,32 +215,37 @@ export function StepDetails({
 						Descripción Corta
 					</label>
 					<span className="text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest">
-						{formData.description.length}/140
+						{formState.data?.description?.length ?? 0}/140
 					</span>
 				</div>
 				<textarea
 					className="block w-full rounded-xl border border-white/10 bg-background/50 text-foreground shadow-sm focus:border-primary/50 focus:ring-4 focus:ring-primary/10 sm:text-sm p-5 placeholder:text-muted-foreground/30 resize-none transition-all outline-none font-sans leading-relaxed"
 					id="description"
+					name="description"
 					placeholder="Describe la herramienta en pocas palabras..."
 					rows={4}
-					value={formData.description}
-					onChange={onChange}
+					defaultValue={formState.data?.description ?? ""}
 				/>
 			</div>
 
 			<div className="flex flex-col sm:flex-row items-center justify-end gap-5">
 				<Button
+					type="button"
 					variant="ghost"
 					className="w-full sm:w-auto px-7 h-12 text-muted-foreground hover:text-foreground font-bold"
 					onClick={onBack}
 				>
 					Atrás
 				</Button>
-				<Button className="w-full sm:w-auto px-7! h-12 font-bold group/button" onClick={onNext}>
+				<Button
+					type="button"
+					className="w-full sm:w-auto px-7! h-12 font-bold group/button"
+					onClick={onNext}
+				>
 					Siguiente: Revisión
 					<ArrowRight className="h-4 w-4 group-hover/button:translate-x-1 transition-transform" />
 				</Button>
 			</div>
-		</form>
+		</>
 	);
 }

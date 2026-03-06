@@ -3,7 +3,7 @@ import {
 	getCategoriesWithCounts,
 	getTotalToolsCount,
 	getAllTechnologies,
-} from "@/actions/get-tools";
+} from "@/data/get-tools";
 import { ToolCard } from "@/components/explore/tool-card";
 import { ExploreSearch } from "@/components/explore/explore-search";
 import { ExploreSidebar } from "@/components/explore/explore-sidebar";

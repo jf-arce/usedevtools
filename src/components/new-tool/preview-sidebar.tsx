@@ -16,11 +16,11 @@ import Image from "next/image";
 import { useGetFaviconUrl } from "@/hooks/use-get-favicon-url";
 
 interface PreviewSidebarProps {
-	formData: NewTool;
+	formData: NewTool | null;
 }
 
 export function PreviewSidebar({ formData }: PreviewSidebarProps) {
-	const { faviconUrl, logoError, setLogoError } = useGetFaviconUrl(formData.url);
+	const { faviconUrl, logoError, setLogoError } = useGetFaviconUrl(formData?.url || "");
 
 	return (
 		<div className="sticky top-24 space-y-8">
@@ -39,7 +39,7 @@ export function PreviewSidebar({ formData }: PreviewSidebarProps) {
 								<div className="h-14 w-14 rounded-xl bg-linear-to-br text-xl font-bold text-white shadow-lg overflow-hidden">
 									<Image
 										src={faviconUrl}
-										alt={`${formData.title} logo`}
+										alt={`${formData?.title} logo`}
 										width={48}
 										height={48}
 										className="h-full w-full object-contain p-1.5 rounded-xl"
@@ -54,11 +54,11 @@ export function PreviewSidebar({ formData }: PreviewSidebarProps) {
 							)}
 							<div>
 								<h4 className="text-xl font-black text-foreground leading-tight tracking-tight">
-									{formData.title || "Tu Herramienta"}
+									{formData?.title || "Tu Herramienta"}
 								</h4>
 								<div className="flex items-center gap-1.5 text-xs text-muted-foreground/70 mt-1 cursor-default hover:text-primary transition-colors">
 									<Globe className="h-3 w-3" />
-									<span>{formData.url || "dominio.com"}</span>
+									<span>{formData?.url || "dominio.com"}</span>
 									<ExternalLink className="h-2 w-2" />
 								</div>
 							</div>
@@ -67,17 +67,17 @@ export function PreviewSidebar({ formData }: PreviewSidebarProps) {
 							variant="secondary"
 							className="bg-primary/10 text-primary border-primary/20 font-black text-[10px] uppercase px-3 py-1"
 						>
-							{formData.pricing}
+							{formData?.pricing}
 						</Badge>
 					</div>
 
 					<p className="text-sm text-muted-foreground/80 leading-relaxed line-clamp-2 mb-6 relative z-10 min-h-10">
-						{formData.description ||
+						{formData?.description ||
 							"Agrega una breve descripción para ver cómo se verá tu herramienta en el directorio."}
 					</p>
 
 					<div className="flex flex-wrap gap-1.5 mb-5 relative z-10">
-						{formData.stack.map((tag) => (
+						{(formData?.stack ?? []).map((tag) => (
 							<span
 								key={tag}
 								className="text-[9px] font-bold text-primary/70 uppercase tracking-tighter bg-primary/5 px-1.5 py-0.5 rounded border border-primary/10"
@@ -93,7 +93,7 @@ export function PreviewSidebar({ formData }: PreviewSidebarProps) {
 								variant="outline"
 								className="bg-background text-[9px] text-muted-foreground/60 uppercase font-black tracking-widest border-white/5 px-3"
 							>
-								{formData.subCategory.name.split(" ")[0]}
+								{(formData?.subCategory?.name ?? "-").split(" ")[0]}
 							</Badge>
 						</div>
 						<div className="flex items-center gap-4 text-muted-foreground/50">

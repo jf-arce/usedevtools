@@ -5,7 +5,7 @@ import { Footer } from "@/components/footer";
 import { MousePointer2 } from "lucide-react";
 import { Hero } from "@/components/home/hero";
 import { ToolBentoGrid } from "@/components/home/tool-bento-grid";
-import { getFeaturedTools } from "@/actions/get-tools";
+import { getFeaturedTools } from "@/data/get-tools";
 import { BackgroundFading } from "@/components/home/background-fading";
 
 export default async function Home() {
