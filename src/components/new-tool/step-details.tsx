@@ -29,6 +29,9 @@ import {
 import { getSubCategories } from "@/data/get-sub-categories";
 import { PricingType } from "@prisma/client";
 import { FormActionState } from "@/types/formActionState";
+import { FormError } from "../form-error";
+import { stepDetailsSchema } from "@/validations/new-tool-validation";
+import { z } from "zod";
 
 interface StepDetailsProps {
 	formState: FormActionState<NewTool>;
@@ -51,6 +54,29 @@ export function StepDetails({ formState, categories, onBack, onNext }: StepDetai
 	});
 	const [pricing, setPricing] = useState<PricingType>(formState.data?.pricing ?? PricingType.FREE);
 	const [stack, setStack] = useState<string[]>(formState.data?.stack ?? []);
+	const [errors, setErrors] = useState<Record<string, string[]>>({});
+
+	const handleNext = () => {
+		const descriptionTextarea = document.getElementById("description") as HTMLTextAreaElement;
+		const descriptionValue = descriptionTextarea?.value ?? "";
+
+		const result = stepDetailsSchema.safeParse({
+			description: descriptionValue,
+			categoryId: selectedCategory.id,
+			subCategoryId: selectedSubCategory.id,
+			pricing,
+			stack,
+		});
+
+		if (!result.success) {
+			const flattenedErrors = z.flattenError(result.error);
+			setErrors(flattenedErrors.fieldErrors as Record<string, string[]>);
+			return;
+		}
+
+		setErrors({});
+		onNext();
+	};
 
 	const handleCategoryChange = async (value: string) => {
 		const found = categories.find((c) => c.id === value);
@@ -101,6 +127,7 @@ export function StepDetails({ formState, categories, onBack, onNext }: StepDetai
 							</SelectContent>
 						</Select>
 					</div>
+					<FormError error={errors.categoryId} />
 				</div>
 
 				<div className="space-y-3 group/input">
@@ -137,6 +164,7 @@ export function StepDetails({ formState, categories, onBack, onNext }: StepDetai
 							</SelectContent>
 						</Select>
 					</div>
+					<FormError error={errors.subCategoryId} />
 				</div>
 			</div>
 
@@ -162,6 +190,7 @@ export function StepDetails({ formState, categories, onBack, onNext }: StepDetai
 							</button>
 						))}
 					</div>
+					<FormError error={errors.pricing} />
 				</div>
 
 				<div className="space-y-3 group/input">
@@ -203,6 +232,7 @@ export function StepDetails({ formState, categories, onBack, onNext }: StepDetai
 							</ComboboxList>
 						</ComboboxContent>
 					</Combobox>
+					<FormError error={errors.stack} />
 				</div>
 			</div>
 
@@ -226,6 +256,7 @@ export function StepDetails({ formState, categories, onBack, onNext }: StepDetai
 					rows={4}
 					defaultValue={formState.data?.description ?? ""}
 				/>
+				<FormError error={errors.description} />
 			</div>
 
 			<div className="flex flex-col sm:flex-row items-center justify-end gap-5">
@@ -240,7 +271,7 @@ export function StepDetails({ formState, categories, onBack, onNext }: StepDetai
 				<Button
 					type="button"
 					className="w-full sm:w-auto px-7! h-12 font-bold group/button"
-					onClick={onNext}
+					onClick={handleNext}
 				>
 					Siguiente: Revisión
 					<ArrowRight className="h-4 w-4 group-hover/button:translate-x-1 transition-transform" />

@@ -7,6 +7,10 @@ import { NewTool } from "@/types/tool";
 import { PricingType } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
+import { z } from "zod";
+import { newToolSchema } from "@/validations/new-tool-validation";
+
+export type NewToolFormValues = z.infer<typeof newToolSchema>;
 
 export const submitNewToolAction = async (
 	_prevState: FormActionState<NewTool>,
@@ -34,6 +38,16 @@ export const submitNewToolAction = async (
 		pricing: formData.get("pricing") as PricingType,
 		stack: JSON.parse(formData.get("stack") as string) as string[],
 	};
+
+	const validatedFields = newToolSchema.safeParse(tool);
+	if (!validatedFields.success) {
+		const flattenedErrors = z.flattenError(validatedFields.error);
+		return {
+			success: false,
+			error: JSON.stringify(flattenedErrors.fieldErrors),
+			data: tool,
+		};
+	}
 
 	const newTool = await db.tool.create({
 		data: {

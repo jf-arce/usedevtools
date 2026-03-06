@@ -1,8 +1,12 @@
+import { useState } from "react";
 import Link from "next/link";
 import { Globe, ArrowRight, CheckCircle2, AlertCircle, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NewTool } from "@/types/tool";
 import { FormActionState } from "@/types/formActionState";
+import { FormError } from "../form-error";
+import { stepInfoSchema } from "@/validations/new-tool-validation";
+import { z } from "zod";
 
 interface StepInfoProps {
 	formState: FormActionState<NewTool>;
@@ -10,6 +14,35 @@ interface StepInfoProps {
 }
 
 export function StepInfo({ formState, onNext }: StepInfoProps) {
+	const [errors, setErrors] = useState<Record<string, string[]>>({});
+
+	const handleNext = () => {
+		const titleInput = document.getElementById("title") as HTMLInputElement;
+		const urlInput = document.getElementById("url") as HTMLInputElement;
+
+		const titleValue = titleInput?.value?.trim() ?? "";
+		let urlValue = urlInput?.value?.trim() ?? "";
+
+		// Prepend https:// if user only entered a domain (UI shows https:// prefix)
+		if (urlValue && !urlValue.startsWith("http://") && !urlValue.startsWith("https://")) {
+			urlValue = `https://${urlValue}`;
+		}
+
+		const result = stepInfoSchema.safeParse({
+			title: titleValue,
+			url: urlValue,
+		});
+
+		if (!result.success) {
+			const flattenedErrors = z.flattenError(result.error);
+			setErrors(flattenedErrors.fieldErrors as Record<string, string[]>);
+			return;
+		}
+
+		setErrors({});
+		onNext();
+	};
+
 	return (
 		<>
 			<div className="space-y-3">
@@ -32,6 +65,7 @@ export function StepInfo({ formState, onNext }: StepInfoProps) {
 						<CheckCircle2 className="h-5 w-5 text-emerald-500" />
 					</div>
 				</div>
+				<FormError error={errors.title ?? formState.errorFields?.title} />
 			</div>
 
 			<div className="space-y-3">
@@ -62,6 +96,7 @@ export function StepInfo({ formState, onNext }: StepInfoProps) {
 					<Info className="h-3 w-3" />
 					Por favor, introduce una URL válida con extensión de dominio.
 				</p>
+				<FormError error={errors.url ?? formState.errorFields?.url} />
 			</div>
 
 			<div className="flex flex-col sm:flex-row items-center justify-end gap-5 ">
@@ -75,7 +110,7 @@ export function StepInfo({ formState, onNext }: StepInfoProps) {
 				<Button
 					type="button"
 					className="w-full sm:w-auto px-7! h-12 font-bold group/button"
-					onClick={onNext}
+					onClick={handleNext}
 				>
 					Siguiente: Detalles
 					<ArrowRight className="h-4 w-4 group-hover/button:translate-x-1 transition-transform" />
