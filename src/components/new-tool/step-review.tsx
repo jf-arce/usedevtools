@@ -61,7 +61,7 @@ export function StepReview({ formData, onBack }: StepReviewProps) {
 				<p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
 					Descripción
 				</p>
-				<p className="text-muted-foreground leading-relaxed italic leading-relaxed wrap-break-word">
+				<p className="text-muted-foreground leading-relaxed italic wrap-break-word">
 					{formData?.description || "Sin descripción"}
 				</p>
 			</div>
