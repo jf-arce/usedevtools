@@ -1,11 +1,11 @@
 import { useState } from "react";
 import Link from "next/link";
-import { Globe, ArrowRight, CheckCircle2, AlertCircle, Info } from "lucide-react";
+import { Globe, ArrowRight, CheckCircle2, CircleX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NewTool } from "@/types/tool";
 import { FormActionState } from "@/types/formActionState";
-import { FormError } from "../form-error";
-import { stepInfoSchema } from "@/validations/new-tool-validation";
+import { FormError } from "@/components/form-error";
+import { stepInfoValidation, urlValidation } from "@/validations/new-tool-validation";
 import { z } from "zod";
 
 interface StepInfoProps {
@@ -13,25 +13,24 @@ interface StepInfoProps {
 	onNext: () => void;
 }
 
+const normalizeUrl = (value: string) => {
+	const trimmed = value.trim();
+	if (trimmed && !trimmed.includes("/")) {
+		return `https://${trimmed}`;
+	}
+	return trimmed;
+};
+
 export function StepInfo({ formState, onNext }: StepInfoProps) {
 	const [errors, setErrors] = useState<Record<string, string[]>>({});
+	const [url, setUrl] = useState("");
 
 	const handleNext = () => {
 		const titleInput = document.getElementById("title") as HTMLInputElement;
-		const urlInput = document.getElementById("url") as HTMLInputElement;
-
 		const titleValue = titleInput?.value?.trim() ?? "";
-		let urlValue = urlInput?.value?.trim() ?? "";
+		const urlValue = normalizeUrl(url);
 
-		// Prepend https:// if user only entered a domain (UI shows https:// prefix)
-		if (urlValue && !urlValue.startsWith("http://") && !urlValue.startsWith("https://")) {
-			urlValue = `https://${urlValue}`;
-		}
-
-		const result = stepInfoSchema.safeParse({
-			title: titleValue,
-			url: urlValue,
-		});
+		const result = stepInfoValidation({ title: titleValue, url: urlValue });
 
 		if (!result.success) {
 			const flattenedErrors = z.flattenError(result.error);
@@ -41,6 +40,21 @@ export function StepInfo({ formState, onNext }: StepInfoProps) {
 
 		setErrors({});
 		onNext();
+	};
+
+	const handleUrlValidation = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const urlValue = normalizeUrl(e.target.value);
+		setUrl(urlValue);
+
+		const result = urlValidation(urlValue);
+
+		if (!result.success) {
+			const flattenedErrors = z.flattenError(result.error);
+			setErrors(flattenedErrors.fieldErrors as Record<string, string[]>);
+			return;
+		}
+
+		setErrors({});
 	};
 
 	return (
@@ -61,9 +75,6 @@ export function StepInfo({ formState, onNext }: StepInfoProps) {
 						type="text"
 						defaultValue={formState.data?.title ?? ""}
 					/>
-					<div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
-						<CheckCircle2 className="h-5 w-5 text-emerald-500" />
-					</div>
 				</div>
 				<FormError error={errors.title ?? formState.errorFields?.title} />
 			</div>
@@ -78,24 +89,26 @@ export function StepInfo({ formState, onNext }: StepInfoProps) {
 				<div className="relative">
 					<div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-muted-foreground/50 text-sm">
 						<Globe className="h-4 w-4 mr-2" />
-						https://
 					</div>
 					<input
-						className="block w-full rounded-xl border border-destructive/30 bg-background/50 text-foreground shadow-sm focus:border-destructive/50 focus:ring-4 focus:ring-destructive/10 sm:text-sm h-14 pl-26 pr-5 placeholder:text-muted-foreground/30 transition-all outline-none"
+						className={`block w-full rounded-xl border border-white/10 focus:border-primary/50 focus:ring-4 focus:ring-primary/10 bg-background/50 text-foreground shadow-sm sm:text-sm h-14 pl-13 pr-5 placeholder:text-muted-foreground/30 transition-all outline-none`}
 						id="url"
 						name="url"
-						placeholder="ejemplo.com"
+						placeholder="https://ejemplo.com o ejemplo.com"
 						type="text"
 						defaultValue={formState.data?.url ?? ""}
+						onChange={(e) => handleUrlValidation(e)}
 					/>
-					<div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
-						<AlertCircle className="h-5 w-5 text-destructive" />
-					</div>
+					{errors.url ? (
+						<div className="absolute inset-y-0 right-0 pr-5 flex items-center pointer-events-none text-red-400">
+							<CircleX className="h-5 w-5" />
+						</div>
+					) : url ? (
+						<div className="absolute inset-y-0 right-0 pr-5 flex items-center pointer-events-none text-green-500">
+							<CheckCircle2 className="h-5 w-5" />
+						</div>
+					) : null}
 				</div>
-				<p className="text-sm text-destructive font-medium mt-2 flex items-center gap-2">
-					<Info className="h-3 w-3" />
-					Por favor, introduce una URL válida con extensión de dominio.
-				</p>
 				<FormError error={errors.url ?? formState.errorFields?.url} />
 			</div>
 

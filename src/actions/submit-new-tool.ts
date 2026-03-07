@@ -4,13 +4,11 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { type FormActionState } from "@/types/formActionState";
 import { NewTool } from "@/types/tool";
+import { newToolValidation } from "@/validations/new-tool-validation";
 import { PricingType } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { z } from "zod";
-import { newToolSchema } from "@/validations/new-tool-validation";
-
-export type NewToolFormValues = z.infer<typeof newToolSchema>;
 
 export const submitNewToolAction = async (
 	_prevState: FormActionState<NewTool>,
@@ -39,7 +37,8 @@ export const submitNewToolAction = async (
 		stack: JSON.parse(formData.get("stack") as string) as string[],
 	};
 
-	const validatedFields = newToolSchema.safeParse(tool);
+	const validatedFields = newToolValidation(tool);
+
 	if (!validatedFields.success) {
 		const flattenedErrors = z.flattenError(validatedFields.error);
 		return {
@@ -70,7 +69,6 @@ export const submitNewToolAction = async (
 		},
 	});
 
-	console.log(newTool);
 	if (!newTool) return { success: false, error: "Failed to create tool", data: tool };
 
 	revalidatePath("/");

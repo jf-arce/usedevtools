@@ -30,7 +30,7 @@ import { getSubCategories } from "@/data/get-sub-categories";
 import { PricingType } from "@prisma/client";
 import { FormActionState } from "@/types/formActionState";
 import { FormError } from "../form-error";
-import { stepDetailsSchema } from "@/validations/new-tool-validation";
+import { stepDetailsValidation } from "@/validations/new-tool-validation";
 import { z } from "zod";
 
 interface StepDetailsProps {
@@ -60,10 +60,16 @@ export function StepDetails({ formState, categories, onBack, onNext }: StepDetai
 		const descriptionTextarea = document.getElementById("description") as HTMLTextAreaElement;
 		const descriptionValue = descriptionTextarea?.value ?? "";
 
-		const result = stepDetailsSchema.safeParse({
+		const result = stepDetailsValidation({
 			description: descriptionValue,
-			categoryId: selectedCategory.id,
-			subCategoryId: selectedSubCategory.id,
+			category: {
+				id: selectedCategory.id,
+				name: selectedCategory.name,
+			},
+			subCategory: {
+				id: selectedSubCategory.id,
+				name: selectedSubCategory.name,
+			},
 			pricing,
 			stack,
 		});
