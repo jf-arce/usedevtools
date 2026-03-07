@@ -1,10 +1,10 @@
 import { CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { NewTool } from "@/types/tool";
+import { NewToolFormValues } from "@/validations/new-tool-validation";
 
 interface StepReviewProps {
-	formData: NewTool | null;
+	formData: NewToolFormValues | null;
 	onBack: () => void;
 }
 
@@ -16,20 +16,23 @@ export function StepReview({ formData, onBack }: StepReviewProps) {
 					<p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
 						Nombre
 					</p>
-					<p className="text-xl font-black">{formData?.title}</p>
+					<p className="text-xl font-black">{formData?.title ?? "-"}</p>
 				</div>
 				<div className="space-y-1">
 					<p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
 						URL del Sitio
 					</p>
-					<p className="text-xl font-black text-primary">https://{formData?.url}</p>
+					<p className="text-xl font-black text-primary break-all">
+						{formData?.url ?? "-"}
+					</p>
 				</div>
 				<div className="space-y-1">
 					<p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
 						Categoría
 					</p>
 					<p className="text-lg font-bold">
-						{formData?.category?.name ?? "-"} &gt; {formData?.subCategory?.name ?? "-"}
+						{formData?.category?.name ?? "-"} &gt;{" "}
+						{formData?.subCategory?.name ?? "-"}
 					</p>
 				</div>
 				<div className="space-y-1">
@@ -45,11 +48,15 @@ export function StepReview({ formData, onBack }: StepReviewProps) {
 					Stack Tecnológico
 				</p>
 				<div className="flex flex-wrap gap-2">
-					{(formData?.stack ?? []).map((tag) => (
-						<Badge key={tag} variant="outline" className="text-primary border-primary/30">
-							{tag}
-						</Badge>
-					))}
+					{(formData?.stack ?? []).length > 0 ? (
+						formData!.stack.map((tag) => (
+							<Badge key={tag} variant="outline" className="text-primary border-primary/30">
+								{tag}
+							</Badge>
+						))
+					) : (
+						<span className="text-muted-foreground italic">-</span>
+					)}
 				</div>
 			</div>
 
@@ -58,7 +65,7 @@ export function StepReview({ formData, onBack }: StepReviewProps) {
 					Descripción
 				</p>
 				<p className="text-muted-foreground leading-relaxed italic">
-					{formData?.description ?? ""}
+					{formData?.description || "Sin descripción"}
 				</p>
 			</div>
 

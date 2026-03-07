@@ -11,12 +11,12 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { NewTool } from "@/types/tool";
+import { NewToolFormValues } from "@/validations/new-tool-validation";
 import Image from "next/image";
 import { useGetFaviconUrl } from "@/hooks/use-get-favicon-url";
 
 interface PreviewSidebarProps {
-	formData: NewTool | null;
+	formData: NewToolFormValues | null;
 }
 
 export function PreviewSidebar({ formData }: PreviewSidebarProps) {

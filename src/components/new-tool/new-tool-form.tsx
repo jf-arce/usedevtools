@@ -1,5 +1,5 @@
 "use client";
-import { useActionState, useState } from "react";
+import { useActionState, useRef, useState } from "react";
 import { Sparkles } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { FormStepper } from "@/components/new-tool/form-stepper";
@@ -9,6 +9,7 @@ import { StepReview } from "@/components/new-tool/step-review";
 import { StepSuccess } from "@/components/new-tool/step-success";
 import { PreviewSidebar } from "@/components/new-tool/preview-sidebar";
 import { Category, NewTool } from "@/types/tool";
+import { NewToolFormValues } from "@/validations/new-tool-validation";
 import { submitNewToolAction } from "@/actions/submit-new-tool";
 import { type FormActionState } from "@/types/formActionState";
 
@@ -21,6 +22,34 @@ const INITIAL_STATE: FormActionState<NewTool> = {
 export const NewToolForm = ({ categories }: { categories: Category[] }) => {
 	const [step, setStep] = useState(1);
 	const [formState, formAction, isPending] = useActionState(submitNewToolAction, INITIAL_STATE);
+	const formRef = useRef<HTMLFormElement>(null);
+	const [formDraft, setFormDraft] = useState<NewToolFormValues | null>(null);
+
+	const collectFormData = (): NewToolFormValues | null => {
+		const form = formRef.current;
+		if (!form) return null;
+		const fd = new FormData(form);
+		let stack: string[] = [];
+		try {
+			stack = JSON.parse(fd.get("stack") as string);
+		} catch {
+			stack = [];
+		}
+		return {
+			title: fd.get("title") as string,
+			url: fd.get("url") as string,
+			category: { id: fd.get("categoryId") as string, name: fd.get("categoryName") as string },
+			subCategory: { id: fd.get("subCategoryId") as string, name: fd.get("subCategoryName") as string },
+			pricing: fd.get("pricing") as NewToolFormValues["pricing"],
+			stack,
+			description: fd.get("description") as string ?? "",
+		};
+	};
+
+	const goToReview = () => {
+		setFormDraft(collectFormData());
+		setStep(3);
+	};
 
 	return (
 		<div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
@@ -44,7 +73,7 @@ export const NewToolForm = ({ categories }: { categories: Category[] }) => {
 
 				<Card className="relative overflow-hidden group border-white/5 bg-card/50 backdrop-blur-xl shadow-2xl">
 					<CardContent className="p-6 md:p-10 relative z-10">
-						<form action={formAction}>
+						<form ref={formRef} action={formAction}>
 							<div
 								style={{ display: step === 1 ? "block" : "none" }}
 								aria-hidden={step !== 1}
@@ -62,12 +91,12 @@ export const NewToolForm = ({ categories }: { categories: Category[] }) => {
 									formState={formState}
 									categories={categories}
 									onBack={() => setStep(1)}
-									onNext={() => setStep(3)}
+									onNext={goToReview}
 								/>
 							</div>
 
 							<div style={{ display: step === 3 ? "block" : "none" }} aria-hidden={step !== 3}>
-								<StepReview formData={formState.data} onBack={() => setStep(2)} />
+								<StepReview formData={formDraft} onBack={() => setStep(2)} />
 							</div>
 						</form>
 
@@ -77,7 +106,7 @@ export const NewToolForm = ({ categories }: { categories: Category[] }) => {
 			</div>
 
 			<div className="lg:col-span-5 xl:col-span-4 flex flex-col gap-8">
-				<PreviewSidebar formData={formState.data} />
+				<PreviewSidebar formData={formDraft ?? formState.data} />
 			</div>
 		</div>
 	);

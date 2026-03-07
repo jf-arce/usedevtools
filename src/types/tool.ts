@@ -1,12 +1,13 @@
 import { PricingType } from "@prisma/client";
 
 export type NewTool = {
+	id: string;
 	title: string;
 	url: string;
 	category: Category;
 	subCategory: SubCategory;
 	pricing: PricingType;
-	description: string;
+	description?: string;
 	stack: string[];
 };
 
@@ -20,3 +21,4 @@ export type SubCategory = {
 	name: string;
 	category?: Category;
 };
+

@@ -4,7 +4,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { type FormActionState } from "@/types/formActionState";
 import { NewTool } from "@/types/tool";
-import { newToolValidation } from "@/validations/new-tool-validation";
+import { newToolValidation, NewToolFormValues } from "@/validations/new-tool-validation";
 import { PricingType } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
@@ -21,7 +21,7 @@ export const submitNewToolAction = async (
 		throw new Error("User not authenticated");
 	}
 
-	const tool: NewTool = {
+	const tool: NewToolFormValues = {
 		title: formData.get("title") as string,
 		url: formData.get("url") as string,
 		description: formData.get("description") as string,
@@ -44,7 +44,7 @@ export const submitNewToolAction = async (
 		return {
 			success: false,
 			error: JSON.stringify(flattenedErrors.fieldErrors),
-			data: tool,
+			data: { id: "", ...tool },
 		};
 	}
 
@@ -69,7 +69,7 @@ export const submitNewToolAction = async (
 		},
 	});
 
-	if (!newTool) return { success: false, error: "Failed to create tool", data: tool };
+	if (!newTool) return { success: false, error: "Failed to create tool", data: { id: "", ...tool } };
 
 	revalidatePath("/");
 
@@ -77,6 +77,7 @@ export const submitNewToolAction = async (
 		success: true,
 		error: null,
 		data: {
+			id: newTool.id,
 			title: newTool.title,
 			url: newTool.url,
 			description: newTool.description || "",

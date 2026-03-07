@@ -133,7 +133,7 @@ export function StepDetails({ formState, categories, onBack, onNext }: StepDetai
 							</SelectContent>
 						</Select>
 					</div>
-					<FormError error={errors.categoryId} />
+					<FormError error={errors.category} />
 				</div>
 
 				<div className="space-y-3 group/input">
@@ -170,7 +170,7 @@ export function StepDetails({ formState, categories, onBack, onNext }: StepDetai
 							</SelectContent>
 						</Select>
 					</div>
-					<FormError error={errors.subCategoryId} />
+					<FormError error={errors.subCategory} />
 				</div>
 			</div>
 
