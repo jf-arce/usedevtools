@@ -1,16 +1,17 @@
 import {
 	Eye,
-	Terminal,
-	Globe,
-	ExternalLink,
 	Heart,
-	Bookmark,
-	Layout,
+	ThumbsUp,
+	Globe,
+	ArrowRight,
 	Lightbulb,
 	Info,
+	Layout,
+	Terminal,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { NewToolFormValues } from "@/validations/new-tool-validation";
 import Image from "next/image";
 import { useGetFaviconUrl } from "@/hooks/use-get-favicon-url";
@@ -27,85 +28,77 @@ export function PreviewSidebar({ formData }: PreviewSidebarProps) {
 			<div className="space-y-4">
 				<h3 className="text-sm font-black text-muted-foreground uppercase tracking-[0.2em] flex items-center gap-2">
 					<Eye className="h-4 w-4 text-primary" />
-					Vista Previa
+					Preview
 				</h3>
 
-				<div className="group relative rounded-3xl bg-card border border-white/5 p-6 transition-all hover:border-primary/30 overflow-hidden">
-					<div className="absolute inset-0 bg-linear-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-
-					<div className="flex items-start justify-between mb-5 relative z-10">
-						<div className="flex items-center gap-4">
-							{faviconUrl && !logoError ? (
-								<div className="h-14 w-14 rounded-xl bg-linear-to-br text-xl font-bold text-white shadow-lg overflow-hidden">
+				<Card className="group py-1! relative overflow-hidden border-neutral-800 bg-neutral-900/50 flex flex-col">
+					<CardHeader className="p-4 pb-0">
+						<div className="flex items-start justify-between">
+							<div className="flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br text-xl font-bold text-white shadow-lg overflow-hidden shrink-0">
+								{faviconUrl && !logoError ? (
 									<Image
 										src={faviconUrl}
-										alt={`${formData?.title} logo`}
+										alt={`${formData?.title || "Tool"} logo`}
 										width={48}
 										height={48}
 										className="h-full w-full object-contain p-1.5 rounded-xl"
 										onError={() => setLogoError(true)}
 										unoptimized
 									/>
-								</div>
-							) : (
-								<div className="h-14 w-14 rounded-2xl bg-black/40 border border-white/10 flex items-center justify-center overflow-hidden shadow-inner group-hover:scale-105 transition-transform duration-500">
-									<Terminal className="h-7 w-7 text-primary" />
-								</div>
-							)}
-							<div>
-								<h4 className="text-xl font-black text-foreground leading-tight tracking-tight">
-									{formData?.title || "Tu Herramienta"}
-								</h4>
-								<div className="flex items-center gap-1.5 text-xs text-muted-foreground/70 mt-1 cursor-default hover:text-primary transition-colors">
-									<Globe className="h-3 w-3" />
-									<span>{formData?.url || "dominio.com"}</span>
-									<ExternalLink className="h-2 w-2" />
+								) : (
+									<Terminal className="h-6 w-6 text-primary" />
+								)}
+							</div>
+
+							<div className="flex gap-2">
+								<div className="p-2 rounded-lg border border-neutral-800 bg-neutral-900 text-neutral-500 cursor-default">
+									<Heart className="h-3.5 w-3.5" />
 								</div>
 							</div>
 						</div>
-						<Badge
-							variant="secondary"
-							className="bg-primary/10 text-primary border-primary/20 font-black text-[10px] uppercase px-3 py-1"
-						>
-							{formData?.pricing}
-						</Badge>
-					</div>
+						<div className="mt-3 flex flex-col gap-1.5 min-w-0">
+							<h3 className="text-lg font-bold uppercase tracking-tight truncate">
+								{formData?.title || "Your Tool"}
+							</h3>
 
-					<p className="text-sm text-muted-foreground/80 leading-relaxed line-clamp-2 mb-6 relative z-10 min-h-10">
-						{formData?.description ||
-							"Agrega una breve descripción para ver cómo se verá tu herramienta en el directorio."}
-					</p>
-
-					<div className="flex flex-wrap gap-1.5 mb-5 relative z-10">
-						{(formData?.stack ?? []).map((tag) => (
-							<span
-								key={tag}
-								className="text-[9px] font-bold text-primary/70 uppercase tracking-tighter bg-primary/5 px-1.5 py-0.5 rounded border border-primary/10"
-							>
-								#{tag}
-							</span>
-						))}
-					</div>
-
-					<div className="flex items-center justify-between pt-5 border-t border-white/5 relative z-10">
-						<div className="flex items-center gap-2">
 							<Badge
 								variant="outline"
-								className="bg-background text-[9px] text-muted-foreground/60 uppercase font-black tracking-widest border-white/5 px-3"
+								className={`
+									${formData?.pricing === "FREE" || !formData?.pricing ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-400" : ""}
+									${formData?.pricing === "FREEMIUM" ? "border-amber-500/50 bg-amber-500/10 text-amber-400" : ""}
+									${formData?.pricing === "PAID" ? "border-rose-500/50 bg-rose-500/10 text-rose-400" : ""}
+									text-[10px] uppercase tracking-wider h-fit w-fit
+								`}
 							>
-								{(formData?.subCategory?.name ?? "-").split(" ")[0]}
+								{(formData?.pricing || "free").toLowerCase()}
 							</Badge>
 						</div>
-						<div className="flex items-center gap-4 text-muted-foreground/50">
-							<button className="hover:text-primary transition-colors flex items-center gap-1 text-[10px] font-black uppercase tracking-widest">
-								<Heart className="h-3.5 w-3.5" />0
-							</button>
-							<button className="hover:text-foreground transition-colors">
-								<Bookmark className="h-4 w-4" />
-							</button>
+					</CardHeader>
+
+					<CardContent className="grow min-w-0 overflow-hidden">
+						<p className="line-clamp-2 text-sm text-neutral-400 leading-relaxed wrap-break-word">
+							{formData?.description ||
+								"Add a short description to see how your tool will look in the directory."}
+						</p>
+					</CardContent>
+
+					<CardFooter className="flex items-center justify-between p-4 pt-0">
+						<div className="flex items-center gap-2">
+							<Button
+								variant="outline"
+								size="sm"
+								className="cursor-default h-8 w-8 p-0"
+								tabIndex={-1}
+							>
+								<Globe className="h-3.5 w-3.5" />
+							</Button>
+							<div className="flex items-center gap-1.5 px-2.5 py-1.5 border border-neutral-800 rounded-md text-xs text-neutral-500 cursor-default">
+								<ThumbsUp className="h-3.5 w-3.5" />
+								<span className="font-bold">0</span>
+							</div>
 						</div>
-					</div>
-				</div>
+					</CardFooter>
+				</Card>
 			</div>
 
 			<Card className="rounded-3xl border-white/5 bg-accent/5 backdrop-blur-md overflow-hidden relative">
@@ -117,14 +110,14 @@ export function PreviewSidebar({ formData }: PreviewSidebarProps) {
 						<div className="p-1.5 rounded-lg bg-amber-500/10 border border-amber-500/20">
 							<Lightbulb className="h-4 w-4 text-amber-500" />
 						</div>
-						Consejos de Publicación
+						Publishing Tips
 					</h4>
 					<ul className="space-y-4">
 						{[
-							"Usa un nombre conciso y fácil de recordar.",
-							"Asegúrate de que la URL sea accesible (https).",
-							"Selecciona la categoría más relevante para el SEO.",
-							"Una descripción con valor atrae más clics.",
+							"Use a concise, memorable name.",
+							"Make sure the URL is accessible (https).",
+							"Select the most relevant category for SEO.",
+							"A valuable description attracts more clicks.",
 						].map((tip, i) => (
 							<li key={i} className="flex items-start gap-4">
 								<div className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary/40 shrink-0" />
@@ -136,13 +129,13 @@ export function PreviewSidebar({ formData }: PreviewSidebarProps) {
 			</Card>
 
 			<div className="p-6 rounded-3xl border border-white/5 bg-background/40 flex items-center gap-4">
-				<div className="h-10 w-10 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+				<div className="h-10 w-10 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
 					<Info className="h-5 w-5 text-emerald-500" />
 				</div>
 				<div>
-					<p className="text-xs font-bold text-foreground">Aprobación Rápida</p>
+					<p className="text-xs font-bold text-foreground">Quick Approval</p>
 					<p className="text-[10px] text-muted-foreground">
-						Las herramientas suelen revisarse en menos de 24h.
+						Tools are usually reviewed in less than 24h.
 					</p>
 				</div>
 			</div>

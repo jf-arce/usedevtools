@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { TECH_STACK_OPTIONS } from "@/constants/tech-stack-options";
 import { Button } from "@/components/ui/button";
@@ -38,9 +38,16 @@ interface StepDetailsProps {
 	categories: Category[];
 	onBack: () => void;
 	onNext: () => void;
+	onPreviewUpdate: () => void;
 }
 
-export function StepDetails({ formState, categories, onBack, onNext }: StepDetailsProps) {
+export function StepDetails({
+	formState,
+	categories,
+	onBack,
+	onNext,
+	onPreviewUpdate,
+}: StepDetailsProps) {
 	const [subCategories, setSubCategories] = useState<{ id: string; name: string }[]>([]);
 	const [loadingSubCategories, setLoadingSubCategories] = useState(false);
 
@@ -55,6 +62,9 @@ export function StepDetails({ formState, categories, onBack, onNext }: StepDetai
 	const [pricing, setPricing] = useState<PricingType>(formState.data?.pricing ?? PricingType.FREE);
 	const [stack, setStack] = useState<string[]>(formState.data?.stack ?? []);
 	const [errors, setErrors] = useState<Record<string, string[]>>({});
+	const [descriptionLength, setDescriptionLength] = useState(
+		formState.data?.description?.length ?? 0,
+	);
 
 	const handleNext = () => {
 		const descriptionTextarea = document.getElementById("description") as HTMLTextAreaElement;
@@ -92,11 +102,13 @@ export function StepDetails({ formState, categories, onBack, onNext }: StepDetai
 		const subs: SubCategory[] = await getSubCategories(value);
 		setSubCategories(subs);
 		setLoadingSubCategories(false);
+		onPreviewUpdate();
 	};
 
 	const handleSubCategoryChange = (value: string) => {
 		const found = subCategories.find((s) => s.id === value);
 		setSelectedSubCategory({ id: value, name: found?.name ?? "" });
+		onPreviewUpdate();
 	};
 
 	const anchor = useComboboxAnchor();
@@ -114,7 +126,7 @@ export function StepDetails({ formState, categories, onBack, onNext }: StepDetai
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 				<div className="space-y-3 group/input">
 					<label className="block text-sm font-bold text-muted-foreground group-focus-within/input:text-primary transition-colors uppercase tracking-wider">
-						Categoría
+						Categoría <span className="text-destructive">*</span>
 					</label>
 					<div className="relative">
 						<Select required value={selectedCategory.id} onValueChange={handleCategoryChange}>
@@ -143,7 +155,7 @@ export function StepDetails({ formState, categories, onBack, onNext }: StepDetai
 							subCategories.length === 0 && "opacity-50",
 						)}
 					>
-						Subcategoría
+						Subcategoría <span className="text-destructive">*</span>
 					</label>
 					<div className="relative">
 						<Select
@@ -177,7 +189,7 @@ export function StepDetails({ formState, categories, onBack, onNext }: StepDetai
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 				<div className="space-y-3 group/input">
 					<label className="block text-sm font-bold text-muted-foreground group-focus-within/input:text-primary transition-colors uppercase tracking-wider">
-						Modelo de Precios
+						Modelo de Precios <span className="text-destructive">*</span>
 					</label>
 					<div className="flex gap-2 p-1.5 bg-background/50 rounded-xl border border-white/10 h-14">
 						{Object.values(PricingType).map((item) => (
@@ -190,7 +202,10 @@ export function StepDetails({ formState, categories, onBack, onNext }: StepDetai
 										: "text-muted-foreground hover:bg-white/5",
 								)}
 								type="button"
-								onClick={() => setPricing(item)}
+								onClick={() => {
+									setPricing(item);
+									onPreviewUpdate();
+								}}
 							>
 								{item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()}
 							</button>
@@ -201,14 +216,17 @@ export function StepDetails({ formState, categories, onBack, onNext }: StepDetai
 
 				<div className="space-y-3 group/input">
 					<label className="block text-sm font-bold text-muted-foreground group-focus-within/input:text-primary transition-colors uppercase tracking-wider">
-						Stack Tecnológico
+						Stack Tecnológico <span className="text-destructive">*</span>
 					</label>
 					<Combobox
 						multiple
 						autoHighlight
 						items={TECH_STACK_OPTIONS}
 						value={stack}
-						onValueChange={(values) => setStack((values as string[]) ?? [])}
+						onValueChange={(values) => {
+							setStack((values as string[]) ?? []);
+							onPreviewUpdate();
+						}}
 					>
 						<ComboboxChips
 							ref={anchor}
@@ -250,8 +268,12 @@ export function StepDetails({ formState, categories, onBack, onNext }: StepDetai
 					>
 						Descripción Corta
 					</label>
-					<span className="text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest">
-						{formState.data?.description?.length ?? 0}/140
+					<span
+						className={`text-[10px] font-mono uppercase tracking-widest ${
+							descriptionLength >= 140 ? "text-amber-500" : "text-muted-foreground/50"
+						}`}
+					>
+						{descriptionLength}/140
 					</span>
 				</div>
 				<textarea
@@ -261,6 +283,11 @@ export function StepDetails({ formState, categories, onBack, onNext }: StepDetai
 					placeholder="Describe la herramienta en pocas palabras..."
 					rows={4}
 					defaultValue={formState.data?.description ?? ""}
+					maxLength={140}
+					onChange={(e) => {
+						setDescriptionLength(e.target.value.length);
+						onPreviewUpdate();
+					}}
 				/>
 				<FormError error={errors.description} />
 			</div>

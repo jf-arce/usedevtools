@@ -39,16 +39,25 @@ export const NewToolForm = ({ categories }: { categories: Category[] }) => {
 			title: fd.get("title") as string,
 			url: fd.get("url") as string,
 			category: { id: fd.get("categoryId") as string, name: fd.get("categoryName") as string },
-			subCategory: { id: fd.get("subCategoryId") as string, name: fd.get("subCategoryName") as string },
+			subCategory: {
+				id: fd.get("subCategoryId") as string,
+				name: fd.get("subCategoryName") as string,
+			},
 			pricing: fd.get("pricing") as NewToolFormValues["pricing"],
 			stack,
-			description: fd.get("description") as string ?? "",
+			description: (fd.get("description") as string) ?? "",
 		};
 	};
 
 	const goToReview = () => {
+		// Sync read since we're navigating immediately
 		setFormDraft(collectFormData());
 		setStep(3);
+	};
+
+	const updatePreview = () => {
+		// Defer read so React can flush setState changes to hidden inputs first
+		setTimeout(() => setFormDraft(collectFormData()), 0);
 	};
 
 	return (
@@ -79,7 +88,11 @@ export const NewToolForm = ({ categories }: { categories: Category[] }) => {
 								aria-hidden={step !== 1}
 								className="space-y-8"
 							>
-								<StepInfo formState={formState} onNext={() => setStep(2)} />
+								<StepInfo
+									formState={formState}
+									onNext={() => setStep(2)}
+									onPreviewUpdate={updatePreview}
+								/>
 							</div>
 
 							<div
@@ -92,6 +105,7 @@ export const NewToolForm = ({ categories }: { categories: Category[] }) => {
 									categories={categories}
 									onBack={() => setStep(1)}
 									onNext={goToReview}
+									onPreviewUpdate={updatePreview}
 								/>
 							</div>
 

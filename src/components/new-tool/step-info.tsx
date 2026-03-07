@@ -11,6 +11,7 @@ import { z } from "zod";
 interface StepInfoProps {
 	formState: FormActionState<NewTool>;
 	onNext: () => void;
+	onPreviewUpdate: () => void;
 }
 
 const normalizeUrl = (value: string) => {
@@ -21,7 +22,7 @@ const normalizeUrl = (value: string) => {
 	return trimmed;
 };
 
-export function StepInfo({ formState, onNext }: StepInfoProps) {
+export function StepInfo({ formState, onNext, onPreviewUpdate }: StepInfoProps) {
 	const [errors, setErrors] = useState<Record<string, string[]>>({});
 	const [url, setUrl] = useState("");
 
@@ -45,6 +46,7 @@ export function StepInfo({ formState, onNext }: StepInfoProps) {
 	const handleUrlValidation = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const urlValue = normalizeUrl(e.target.value);
 		setUrl(urlValue);
+		onPreviewUpdate();
 
 		const result = urlValidation(urlValue);
 
@@ -74,6 +76,7 @@ export function StepInfo({ formState, onNext }: StepInfoProps) {
 						placeholder="Ej: Linear, Supabase, Vercel"
 						type="text"
 						defaultValue={formState.data?.title ?? ""}
+						onChange={onPreviewUpdate}
 					/>
 				</div>
 				<FormError error={errors.title ?? formState.errorFields?.title} />

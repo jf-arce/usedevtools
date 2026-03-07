@@ -16,23 +16,20 @@ export function StepReview({ formData, onBack }: StepReviewProps) {
 					<p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
 						Nombre
 					</p>
-					<p className="text-xl font-black">{formData?.title ?? "-"}</p>
+					<p className="text-xl font-black truncate">{formData?.title ?? "-"}</p>
 				</div>
 				<div className="space-y-1">
 					<p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
 						URL del Sitio
 					</p>
-					<p className="text-xl font-black text-primary break-all">
-						{formData?.url ?? "-"}
-					</p>
+					<p className="text-xl font-black text-primary break-all">{formData?.url ?? "-"}</p>
 				</div>
 				<div className="space-y-1">
 					<p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
 						Categoría
 					</p>
 					<p className="text-lg font-bold">
-						{formData?.category?.name ?? "-"} &gt;{" "}
-						{formData?.subCategory?.name ?? "-"}
+						{formData?.category?.name ?? "-"} &gt; {formData?.subCategory?.name ?? "-"}
 					</p>
 				</div>
 				<div className="space-y-1">
@@ -60,11 +57,11 @@ export function StepReview({ formData, onBack }: StepReviewProps) {
 				</div>
 			</div>
 
-			<div className="space-y-1">
+			<div className="space-y-1 min-w-0 overflow-hidden grow">
 				<p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
 					Descripción
 				</p>
-				<p className="text-muted-foreground leading-relaxed italic">
+				<p className="text-muted-foreground leading-relaxed italic leading-relaxed wrap-break-word">
 					{formData?.description || "Sin descripción"}
 				</p>
 			</div>
