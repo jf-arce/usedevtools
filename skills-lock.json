@@ -1,6 +1,11 @@
 {
   "version": 1,
   "skills": {
+    "nano-banana-2": {
+      "source": "tul-sh/skills",
+      "sourceType": "github",
+      "computedHash": "dc826c226f62f44f802bc47c25149bca1501e684a2f6c7fb14fa985d14fb4f7f"
+    },
     "prisma-cli": {
       "source": "prisma/skills",
       "sourceType": "github",

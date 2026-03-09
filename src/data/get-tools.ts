@@ -12,6 +12,8 @@ export async function getTools({
 	stack,
 	limit = 12,
 	skip = 0,
+	favoritesUserId,
+	uploadedByUserId,
 }: {
 	query?: string;
 	category?: string;
@@ -21,13 +23,15 @@ export async function getTools({
 	stack?: string[];
 	limit?: number;
 	skip?: number;
+	favoritesUserId?: string;
+	uploadedByUserId?: string;
 } = {}) {
 	const session = await auth.api.getSession({
 		headers: await headers(),
 	});
 
 	const where: Prisma.ToolWhereInput = {
-		published: true, // Only show published tools
+		published: uploadedByUserId ? undefined : true, // Only show published tools unless viewing own
 	};
 
 	if (query) {
@@ -52,6 +56,14 @@ export async function getTools({
 
 	if (stack && stack.length > 0) {
 		where.stack = { some: { name: { in: stack } } };
+	}
+
+	if (favoritesUserId) {
+		where.favorites = { some: { userId: favoritesUserId } };
+	}
+
+	if (uploadedByUserId) {
+		where.userId = uploadedByUserId;
 	}
 
 	const userId = session?.user?.id;

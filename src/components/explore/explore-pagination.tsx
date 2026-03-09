@@ -14,9 +14,14 @@ interface ExplorePaginationProps {
 		pricing?: string;
 		sort?: string;
 	};
+	basePath?: string;
 }
 
-export const ExplorePagination = ({ pagination, filters }: ExplorePaginationProps) => {
+export const ExplorePagination = ({
+	pagination,
+	filters,
+	basePath = "/explore",
+}: ExplorePaginationProps) => {
 	const { currentPage, total, pageSize } = pagination;
 	const { q, category, subCategory, pricing, sort } = filters;
 
@@ -27,7 +32,7 @@ export const ExplorePagination = ({ pagination, filters }: ExplorePaginationProp
 					<a
 						href={
 							currentPage > 1
-								? `/explore?${new URLSearchParams({
+								? `${basePath}?${new URLSearchParams({
 										...(q ? { q } : {}),
 										...(category ? { category } : {}),
 										...(subCategory ? { subCategory } : {}),
@@ -50,7 +55,7 @@ export const ExplorePagination = ({ pagination, filters }: ExplorePaginationProp
 					<a
 						href={
 							currentPage * pageSize < total
-								? `/explore?${new URLSearchParams({
+								? `${basePath}?${new URLSearchParams({
 										...(q ? { q } : {}),
 										...(category ? { category } : {}),
 										...(subCategory ? { subCategory } : {}),
