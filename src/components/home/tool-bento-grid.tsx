@@ -61,7 +61,7 @@ export const ToolBentoGrid = ({
 	};
 
 	return (
-		<section id="tools" className="relative overflow-hidden">
+		<section id="tools" className="relative overflow-hidden mt-16">
 			<div className="container px-4 relative z-10 mx-auto">
 				<div className="flex justify-between items-end mb-16 px-2">
 					<div className="space-y-2">
