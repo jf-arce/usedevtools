@@ -82,7 +82,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 					</p>
 				</div>
 				<Button asChild className="shrink-0 group">
-					<Link href="/dashboard/new">
+					<Link href="/new-tool">
 						<PlusCircle className="mr-2 h-4 w-4 transition-transform group-hover:rotate-90" />
 						Submit a Tool
 					</Link>

@@ -69,9 +69,9 @@ export default function Navbar() {
 								</Button>
 
 								<Button variant="outline" asChild className="hidden sm:flex">
-									<Link href="/new-tool" className="flex items-center gap-2">
-										<PlusCircle />
-										Add
+									<Link href="/dashboard" className="flex items-center gap-2">
+										<LayoutDashboard />
+										Dashboard
 									</Link>
 								</Button>
 							</div>
@@ -98,7 +98,7 @@ export default function Navbar() {
 									<DropdownMenuItem asChild>
 										<Link href="/dashboard">
 											<LayoutDashboard className="mr-2 h-4 w-4" />
-											Panel de Control
+											Dashboard
 										</Link>
 									</DropdownMenuItem>
 									<DropdownMenuSeparator />
@@ -107,7 +107,7 @@ export default function Navbar() {
 										onClick={() => signOut()}
 									>
 										<LogOut className="mr-2 h-4 w-4" />
-										Cerrar Sesión
+										Sign out
 									</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
