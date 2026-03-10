@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# UseDevTools
 
-## Getting Started
+Developer tools platform. Built with modern technologies to ensure maximum performance and scalability.
 
-First, run the development server:
+## 🛠️ Tech Stack
+
+- **Framework:** [Next.js 16](https://nextjs.org/) (App Router, Server Actions, Turbopack)
+- **Database & ORM:** PostgreSQL via [@neondatabase/serverless](https://neon.tech/) + [Prisma ORM 7](https://www.prisma.io/)
+- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
+- **Validation:** [Zod](https://zod.dev/)
+- **Authentication:** [Better Auth](https://better-auth.com/)
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/your-username/usedevtools.git
+cd usedevtools
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Configure Environment Variables
+
+Create a `.env` file in the root of the project based on an example file and add your credentials (Database, Authentication, etc.):
+
+```env
+DATABASE_URL="your-neon-connection-string"
+```
+
+### 4. Generate Prisma Client & Sync Database
+
+```bash
+npm run prisma:generate
+npm run prisma:push
+```
+
+### 5. Start Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The application will be available at [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📝 Development Notes and Solved Issues
 
-## Learn More
+During the development of this application, we faced specific challenges associated with migrating to the latest versions of our tech stack. The problems and their respective solutions are documented below:
 
-To learn more about Next.js, take a look at the following resources:
+### 1. Conflict between Prisma ORM 7 and Turbopack (Next.js 16)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**The Problem:**
+When trying to boot the Next.js 16 development server using Turbopack (`next dev`), the build failed when integrating Prisma ORM 7. Turbopack did not correctly detect the Prisma client types because they were dynamically generated and injected into the `node_modules/@prisma/client` folder as CommonJS modules (`prisma-client-js`). Due to Turbopack's hyper-aggressive caching, updates to internal modules inside `node_modules` were ignored, breaking the developer experience unless falling back to the old Webpack compiler (`next dev --webpack`).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**The Solution:**
+To natively integrate both tools without disabling the fast Turbopack engine, we applied the following patterns to the project:
 
-## Deploy on Vercel
+1. **Re-generating the client outside of `node_modules`:**
+   In Prisma 7, it's possible to create a 100% static ESM module. To do this, we modified `prisma/schema.prisma` by changing the default provider and redirecting file creation to a controlled subfolder:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```prisma
+   // prisma/schema.prisma
+   generator client {
+     provider = "prisma-client"
+     output   = "./generated/client"
+   }
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+2. **TypeScript Path Mapping (`tsconfig.json`):**
+   To avoid breaking all existing imports consuming `@prisma/client` throughout our codebase (e.g., validations, components, server actions), we transparently configured a route alias in the `tsconfig.json` file:
+
+   ```json
+   "compilerOptions": {
+     "paths": {
+       "@/*": ["./src/*"],
+       "@prisma/client": ["./prisma/generated/client"]
+     }
+   }
+   ```
+
+   Thanks to this, any import like `import { PrismaClient } from "@prisma/client";` is resolved internally by looking up the new `./prisma/generated/client` folder.
+
+3. **Exclusion in `.gitignore`:**
+   By pulling the generated types out of `node_modules`, they started living in the local working tree. We explicitly excluded the `/prisma/generated/client` folder in the `.gitignore` file to avoid pushing auto-generated build files (artifacts) into the repository.
+
+4. **Enabled Turbopack in `package.json`:**
+   We completely cleaned up the old `"dev": "next dev --webpack"` script, restoring its native value `"dev": "next dev"`, finally achieving millisecond compile and hot-reload times.
