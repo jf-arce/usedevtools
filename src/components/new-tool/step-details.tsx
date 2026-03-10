@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { TECH_STACK_OPTIONS } from "@/constants/tech-stack-options";
 import { Button } from "@/components/ui/button";
