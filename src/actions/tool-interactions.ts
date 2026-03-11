@@ -36,7 +36,7 @@ export async function toggleVoteAction(toolId: string) {
 					data: { votes: { decrement: 1 } },
 				}),
 			]);
-			revalidatePath("/explore");
+			revalidatePath("/", "layout");
 			return { success: true, voted: false };
 		} else {
 			await db.$transaction([
@@ -48,7 +48,7 @@ export async function toggleVoteAction(toolId: string) {
 					data: { votes: { increment: 1 } },
 				}),
 			]);
-			revalidatePath("/explore");
+			revalidatePath("/", "layout");
 			return { success: true, voted: true };
 		}
 	} catch (error) {
@@ -82,7 +82,7 @@ export async function toggleFavoriteAction(toolId: string) {
 			await db.favorite.delete({
 				where: { id: existingFavorite.id },
 			});
-			revalidatePath("/explore");
+			revalidatePath("/", "layout");
 			return { success: true, isFavorite: false };
 		} else {
 			await db.favorite.create({
@@ -91,7 +91,7 @@ export async function toggleFavoriteAction(toolId: string) {
 					toolId,
 				},
 			});
-			revalidatePath("/explore");
+			revalidatePath("/", "layout");
 			return { success: true, isFavorite: true };
 		}
 	} catch (error) {
