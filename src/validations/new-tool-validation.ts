@@ -35,7 +35,11 @@ export const stepInfoValidation = (data: StepInfoValues) => stepInfoSchema.safeP
 
 // Details step validation
 const stepDetailsSchema = z.object({
-	description: z.string().max(200, "Description must be less than 200 characters").optional().or(z.literal("")),
+	description: z
+		.string()
+		.max(200, "Description must be less than 200 characters")
+		.optional()
+		.or(z.literal("")),
 	category: z.object({
 		id: z.cuid("Category is required"),
 		name: z.string(),

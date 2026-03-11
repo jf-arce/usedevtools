@@ -4,10 +4,7 @@ import { TheInfiniteGrid } from "@/components/the-infinite-grid";
 export const Hero = ({ tools }: { tools: any[] }) => {
 	return (
 		<TheInfiniteGrid className="min-h-[calc(100vh-4rem)]">
-			<section
-				id="home-hero"
-				className="relative flex items-center w-full py-20"
-			>
+			<section id="home-hero" className="relative flex items-center w-full py-20">
 				<div className="container relative z-10 mx-auto px-4 flex justify-center items-center">
 					<div className="space-y-8 md:space-y-12 animate-fade-in w-full flex flex-col items-center text-center">
 						<div className="space-y-6 flex flex-col items-center">

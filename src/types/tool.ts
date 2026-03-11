@@ -21,4 +21,3 @@ export type SubCategory = {
 	name: string;
 	category?: Category;
 };
-

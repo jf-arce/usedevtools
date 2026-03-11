@@ -69,7 +69,8 @@ export const submitNewToolAction = async (
 		},
 	});
 
-	if (!newTool) return { success: false, error: "Failed to create tool", data: { id: "", ...tool } };
+	if (!newTool)
+		return { success: false, error: "Failed to create tool", data: { id: "", ...tool } };
 
 	revalidatePath("/");
 
