@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 import { type FormActionState } from "@/types/formActionState";
 import { NewTool } from "@/types/tool";
 import { newToolValidation, NewToolFormValues } from "@/validations/new-tool-validation";
-import { PricingType } from "@prisma/client";
+import { PricingType } from "@prisma/generated";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { z } from "zod";

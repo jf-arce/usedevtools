@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "../../prisma/generated/client/client";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 

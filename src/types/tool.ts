@@ -1,4 +1,4 @@
-import { PricingType } from "@prisma/client";
+import { PricingType } from "@prisma/generated";
 
 export type NewTool = {
 	id: string;

@@ -1,5 +1,5 @@
 import { VALID_TLDS } from "@/constants/valid-tlds";
-import { PricingType } from "@prisma/client";
+import { PricingType } from "@prisma/generated";
 import { z } from "zod";
 
 // Info step validation

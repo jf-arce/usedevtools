@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowRight, Heart, ThumbsUp, Globe } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { PricingType } from "@prisma/client";
+import { PricingType } from "@prisma/generated";
 import { toggleVoteAction, toggleFavoriteAction } from "@/actions/tool-interactions";
 import { useState } from "react";
 import {

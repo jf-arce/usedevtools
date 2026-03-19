@@ -27,7 +27,7 @@ import {
 	useComboboxAnchor,
 } from "@/components/ui/combobox";
 import { getSubCategories } from "@/data/get-sub-categories";
-import { PricingType } from "@prisma/client";
+import { PricingType } from "@prisma/generated";
 import { FormActionState } from "@/types/formActionState";
 import { FormError } from "../form-error";
 import { stepDetailsValidation } from "@/validations/new-tool-validation";
