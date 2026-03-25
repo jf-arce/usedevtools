@@ -1,3 +1,10 @@
+export interface GithubRelease {
+	tag: string;
+	name: string;
+	date: string;
+	url: string;
+}
+
 export interface GithubStats {
 	stars: number;
 	forks: number;
@@ -8,6 +15,12 @@ export interface GithubStats {
 	repo: string;
 	createdAt: string;
 	npmDownloads?: number;
+	npmTrend?: number;
+	releases?: GithubRelease[];
+	docsUrl?: string;
+	installUrl?: string;
+	hasDiscussions?: boolean;
+	hasWiki?: boolean;
 }
 
 export async function getGithubStats(siteUrl: string): Promise<GithubStats | null> {
@@ -76,18 +89,97 @@ export async function getGithubStats(siteUrl: string): Promise<GithubStats | nul
 				if (apiRes.ok) {
 					const data = await apiRes.json();
 
-					// Intentar obtener descargas semanales de NPM (si el paquete existe con el mismo nombre)
-					let npmDownloads = 0;
-					try {
-						const npmRes = await fetch(`https://api.npmjs.org/downloads/point/last-week/${repo}`, {
+					// Fetch NPM downloads, NPM trend, releases en paralelo
+					const [npmDownloads, npmTrend, releases] = await Promise.all([
+						fetch(`https://api.npmjs.org/downloads/point/last-week/${repo}`, {
 							next: { revalidate: 86400 },
-						});
-						if (npmRes.ok) {
-							const npmData = await npmRes.json();
-							npmDownloads = npmData.downloads || 0;
+						})
+							.then((r) => (r.ok ? r.json() : null))
+							.then((d) => d?.downloads || 0)
+							.catch(() => 0),
+						fetch(`https://api.npmjs.org/downloads/range/last-month/${repo}`, {
+							next: { revalidate: 86400 },
+						})
+							.then((r) => (r.ok ? r.json() : null))
+							.then((d) => {
+								if (!d?.downloads?.length) return undefined;
+								const days = d.downloads as { day: string; downloads: number }[];
+								const mid = Math.floor(days.length / 2);
+								const firstHalf = days.slice(0, mid).reduce((s: number, d: any) => s + d.downloads, 0);
+								const secondHalf = days.slice(mid).reduce((s: number, d: any) => s + d.downloads, 0);
+								if (firstHalf === 0) return undefined;
+								return Math.round(((secondHalf - firstHalf) / firstHalf) * 100);
+							})
+							.catch(() => undefined as number | undefined),
+						fetch(`https://api.github.com/repos/${owner}/${repo}/releases?per_page=5`, {
+							next: { revalidate: 3600 },
+							headers: {
+								"User-Agent": "usedevtools-app",
+								Accept: "application/vnd.github.v3+json",
+							},
+						})
+							.then((r) => (r.ok ? r.json() : []))
+							.then((items: any[]) =>
+								items.map((r: any) => ({
+									tag: r.tag_name,
+									name: r.name || r.tag_name,
+									date: r.published_at,
+									url: r.html_url,
+								})),
+							)
+							.catch(() => [] as GithubRelease[]),
+					]);
+
+					// Resolver docs URL: intentar /docs primero, fallback a homepage
+					let docsUrl: string | undefined;
+					const homepage = data.homepage as string | undefined;
+					if (homepage && homepage !== data.html_url) {
+						try {
+							const docsController = new AbortController();
+							const docsTimeout = setTimeout(() => docsController.abort(), 3000);
+							const docsPath = homepage.replace(/\/$/, "") + "/docs";
+							const docsRes = await fetch(docsPath, {
+								method: "HEAD",
+								signal: docsController.signal,
+								redirect: "follow",
+								headers: { "User-Agent": "usedevtools-bot/1.0" },
+							});
+							clearTimeout(docsTimeout);
+							docsUrl = docsRes.ok ? docsPath : homepage;
+						} catch {
+							docsUrl = homepage;
 						}
-					} catch (e) {
-						// Ignorar errores de NPM si no es un paquete JS/TS
+					}
+
+					// Buscar URL de instalación: probar rutas comunes bajo docsUrl
+					let installUrl: string | undefined;
+					if (docsUrl) {
+						const base = docsUrl.replace(/\/$/, "");
+						const candidates = [
+							`${base}/installation`,
+							`${base}/getting-started`,
+							`${base}/get-started`,
+							`${base}/docs/installation`,
+						];
+						for (const candidate of candidates) {
+							try {
+								const ctrl = new AbortController();
+								const tid = setTimeout(() => ctrl.abort(), 3000);
+								const res = await fetch(candidate, {
+									method: "HEAD",
+									signal: ctrl.signal,
+									redirect: "follow",
+									headers: { "User-Agent": "usedevtools-bot/1.0" },
+								});
+								clearTimeout(tid);
+								if (res.ok) {
+									installUrl = candidate;
+									break;
+								}
+							} catch {
+								// try next
+							}
+						}
 					}
 
 					return {
@@ -100,6 +192,12 @@ export async function getGithubStats(siteUrl: string): Promise<GithubStats | nul
 						repo: data.name,
 						createdAt: data.created_at,
 						npmDownloads: npmDownloads > 0 ? npmDownloads : undefined,
+						npmTrend: npmTrend !== undefined && Math.abs(npmTrend) >= 1 ? npmTrend : undefined,
+						releases: releases.length > 0 ? releases : undefined,
+						docsUrl,
+						installUrl,
+						hasDiscussions: data.has_discussions || false,
+						hasWiki: data.has_wiki || false,
 					};
 				}
 			}

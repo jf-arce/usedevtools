@@ -26,6 +26,7 @@ interface ToolHeaderProps {
 		pricing: string;
 		votes: number;
 		category: string;
+		subCategory: string;
 	};
 	initialHasVoted: boolean;
 	initialIsFavorite: boolean;
@@ -123,6 +124,9 @@ export function ToolHeader({ tool, initialHasVoted, initialIsFavorite, repoUrl }
 							</h1>
 							<span className="inline-flex items-center rounded-full bg-indigo-500/10 px-2.5 py-0.5 text-xs font-medium text-indigo-400 border border-indigo-500/20">
 								{tool.category}
+							</span>
+							<span className="inline-flex items-center rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-xs font-medium text-emerald-400 border border-emerald-500/20 capitalize">
+								{tool.subCategory}
 							</span>
 						</div>
 						<p className="text-lg text-neutral-400 max-w-2xl leading-relaxed">

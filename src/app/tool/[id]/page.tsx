@@ -3,16 +3,9 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { ToolHeader } from "./tool-header";
-import {
-	ChevronRight,
-	Star,
-	GitFork,
-	AlertCircle,
-	BookOpen,
-	Download,
-	UserCircle,
-	MessageSquare,
-} from "lucide-react";
+import { RecentReleases } from "./recent-releases";
+import { CommunityLinks } from "./community-links";
+import { ChevronRight, Star, GitFork, AlertCircle, BookOpen, Download, TrendingUp, TrendingDown } from "lucide-react";
 import Link from "next/link";
 import { getGithubStats } from "@/lib/get-github-stats";
 
@@ -95,6 +88,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
 					pricing: tool.pricing,
 					votes: tool.votes,
 					category: tool.category.name,
+					subCategory: tool.subCategory.name,
 				}}
 				initialHasVoted={hasVoted}
 				initialIsFavorite={isFavorite}
@@ -116,73 +110,24 @@ export default async function ToolPage({ params }: ToolPageProps) {
 						</div>
 					</div>
 
-					{/* Community Reviews Placeholder */}
-					<div className="bg-neutral-900/50 border border-neutral-800 rounded-xl p-8 mt-8">
-						<div className="flex items-center justify-between mb-6">
-							<div className="flex items-center gap-2">
-								<MessageSquare className="h-5 w-5 text-indigo-400" />
-								<h3 className="text-xl font-bold text-white">Community Reviews</h3>
-							</div>
-							<span className="text-xs text-indigo-400 font-medium px-2 py-1 bg-indigo-500/10 rounded-md ring-1 ring-inset ring-indigo-500/20">
-								Coming soon
-							</span>
-						</div>
+					{githubStats && (
+						<CommunityLinks
+							docsUrl={githubStats.docsUrl}
+							installUrl={githubStats.installUrl}
+							discussionsUrl={
+								githubStats.hasDiscussions
+									? `${githubStats.repoUrl}/discussions`
+									: undefined
+							}
+							wikiUrl={
+								githubStats.hasWiki
+									? `${githubStats.repoUrl}/wiki`
+									: undefined
+							}
+						/>
+					)}
 
-						<div className="space-y-6">
-							{/* Simulated Review 1 */}
-							<div className="border-b border-neutral-800/50 pb-6 last:border-0 last:pb-0 opacity-70">
-								<div className="flex items-start justify-between mb-2">
-									<div className="flex items-center gap-3">
-										<div className="h-10 w-10 rounded-full bg-neutral-800 flex items-center justify-center text-neutral-500">
-											<UserCircle className="h-6 w-6" />
-										</div>
-										<div>
-											<div className="text-sm font-semibold text-white">Web Developer</div>
-											<div className="text-xs text-neutral-500">Web mention • Recently</div>
-										</div>
-									</div>
-									<div className="flex text-yellow-500 text-xs">
-										<Star className="h-4 w-4 fill-current" />
-										<Star className="h-4 w-4 fill-current" />
-										<Star className="h-4 w-4 fill-current" />
-										<Star className="h-4 w-4 fill-current" />
-										<Star className="h-4 w-4 fill-current" />
-									</div>
-								</div>
-								<p className="text-sm text-neutral-400 leading-relaxed pl-13">
-									"I've been using {tool.title} for a few months now and it has completely
-									transformed my workflow. The integration is seamless and the community is
-									amazing."
-								</p>
-							</div>
-
-							{/* Simulated Review 2 */}
-							<div className="border-b border-neutral-800/50 pb-6 last:border-0 last:pb-0 opacity-70">
-								<div className="flex items-start justify-between mb-2">
-									<div className="flex items-center gap-3">
-										<div className="h-10 w-10 rounded-full bg-neutral-800 flex items-center justify-center text-neutral-500">
-											<UserCircle className="h-6 w-6" />
-										</div>
-										<div>
-											<div className="text-sm font-semibold text-white">Software Engineer</div>
-											<div className="text-xs text-neutral-500">Web mention • Recently</div>
-										</div>
-									</div>
-									<div className="flex text-yellow-500 text-xs">
-										<Star className="h-4 w-4 fill-current" />
-										<Star className="h-4 w-4 fill-current" />
-										<Star className="h-4 w-4 fill-current" />
-										<Star className="h-4 w-4 fill-current" />
-										<Star className="h-4 w-4" />
-									</div>
-								</div>
-								<p className="text-sm text-neutral-400 leading-relaxed pl-13">
-									"Solid alternative to other tools in the {tool.category.name} space. The ecosystem
-									around it is very active and helpful. Highly recommended!"
-								</p>
-							</div>
-						</div>
-					</div>
+					<RecentReleases releases={githubStats?.releases} />
 				</div>
 
 				{/* Right Column: Sidebar Metadata */}
@@ -209,14 +154,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
 								</span>
 							</div>
 
-							<div className="flex items-center justify-between py-2 border-b border-neutral-800/50">
-								<span className="text-sm text-neutral-400">Subcategory</span>
-								<span className="text-sm font-medium text-white capitalize">
-									{tool.subCategory.name}
-								</span>
-							</div>
-
-							{githubStats && (
+{githubStats && (
 								<>
 									<div className="flex items-center justify-between py-2 border-b border-neutral-800/50">
 										<span className="text-sm text-neutral-400">Stars</span>
@@ -248,13 +186,29 @@ export default async function ToolPage({ params }: ToolPageProps) {
 									{githubStats.npmDownloads && (
 										<div className="flex items-center justify-between py-2 border-b border-neutral-800/50">
 											<span className="text-sm text-neutral-400">NPM Weekly</span>
-											<div className="flex items-center gap-1 text-sm font-medium text-white">
+											<div className="flex items-center gap-1.5 text-sm font-medium text-white">
 												<Download className="h-4 w-4 text-indigo-400" />
 												{githubStats.npmDownloads >= 1000000
 													? (githubStats.npmDownloads / 1000000).toFixed(1) + "M"
 													: githubStats.npmDownloads >= 1000
 														? (githubStats.npmDownloads / 1000).toFixed(1) + "k"
 														: githubStats.npmDownloads}
+												{githubStats.npmTrend !== undefined && (
+													<span
+														className={`inline-flex items-center gap-0.5 text-[11px] font-medium ${
+															githubStats.npmTrend > 0
+																? "text-emerald-400"
+																: "text-rose-400"
+														}`}
+													>
+														{githubStats.npmTrend > 0 ? (
+															<TrendingUp className="h-3 w-3" />
+														) : (
+															<TrendingDown className="h-3 w-3" />
+														)}
+														{Math.abs(githubStats.npmTrend)}%
+													</span>
+												)}
 											</div>
 										</div>
 									)}
