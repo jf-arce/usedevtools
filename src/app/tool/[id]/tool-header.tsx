@@ -97,13 +97,10 @@ export function ToolHeader({ tool, initialHasVoted, initialIsFavorite, repoUrl }
 
 	return (
 		<div className="relative mb-10 h-full w-full">
-			{/* Glow background effect */}
-			<div className="absolute -top-20 -left-20 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
 			<div className="relative flex flex-col md:flex-row gap-6 md:items-start justify-between">
 				<div className="flex flex-col sm:flex-row gap-6">
 					{/* Tool Logo Large */}
-					<div className="shrink-0 h-24 w-24 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center p-4 shadow-lg transition-transform hover:scale-105 duration-300">
+					<div className="shrink-0 h-24 w-24 rounded-xl bg-neutral-900 border border-neutral-800 flex items-center justify-center p-4 shadow-lg transition-transform hover:scale-105 duration-300">
 						{faviconUrl && !logoError ? (
 							<Image
 								src={faviconUrl}
@@ -115,7 +112,7 @@ export function ToolHeader({ tool, initialHasVoted, initialIsFavorite, repoUrl }
 								unoptimized
 							/>
 						) : (
-							<span className="text-3xl font-bold text-slate-400">{iconLetter}</span>
+							<span className="text-3xl font-bold text-neutral-400">{iconLetter}</span>
 						)}
 					</div>
 
@@ -128,7 +125,7 @@ export function ToolHeader({ tool, initialHasVoted, initialIsFavorite, repoUrl }
 								{tool.category}
 							</span>
 						</div>
-						<p className="text-lg text-slate-400 max-w-2xl leading-relaxed">
+						<p className="text-lg text-neutral-400 max-w-2xl leading-relaxed">
 							{tool.description || "No description available for this tool."}
 						</p>
 					</div>
@@ -138,7 +135,7 @@ export function ToolHeader({ tool, initialHasVoted, initialIsFavorite, repoUrl }
 					<Button
 						asChild
 						variant="ghost"
-						className="flex-1 active:scale-95 transition-transform lg:flex-none inline-flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-6 py-5 sm:py-6 lg:py-3 h-auto text-sm font-semibold text-white shadow-[0_0_20px_-5px_rgba(79,70,229,0.5)] hover:bg-indigo-500 hover:text-white hover:shadow-[0_0_25px_-5px_rgba(79,70,229,0.6)] ring-1 ring-inset ring-white/10"
+						className="flex-1 active:scale-95 transition-transform lg:flex-none inline-flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-6 py-5 sm:py-6 lg:py-3 h-auto text-sm font-semibold text-white shadow-[0_0_20px_-5px_rgba(79,70,229,0.5)] hover:bg-indigo-500! hover:text-white hover:shadow-[0_0_25px_-5px_rgba(79,70,229,0.6)] ring-1 ring-inset ring-white/10"
 					>
 						<a href={tool.url} target="_blank" rel="noopener noreferrer">
 							<span>Visit website</span>
@@ -149,7 +146,7 @@ export function ToolHeader({ tool, initialHasVoted, initialIsFavorite, repoUrl }
 						<Button
 							asChild
 							variant="outline"
-							className="flex-1 active:scale-95 transition-transform lg:flex-none inline-flex items-center justify-center gap-2 rounded-lg border-slate-700 bg-slate-800/80 px-4 py-5 sm:py-6 lg:py-3 h-auto text-sm font-semibold text-white hover:bg-slate-700 hover:text-white ring-1 ring-inset ring-slate-600/50 group"
+							className="flex-1 active:scale-95 transition-transform lg:flex-none inline-flex items-center justify-center gap-2 rounded-lg border-neutral-700 bg-neutral-800/80 px-4 py-5 sm:py-6 lg:py-3 h-auto text-sm font-semibold text-white hover:bg-neutral-700 hover:text-white ring-1 ring-inset ring-neutral-600/50 group"
 							aria-label="View on GitHub"
 						>
 							<a href={repoUrl} target="_blank" rel="noopener noreferrer">
@@ -161,17 +158,17 @@ export function ToolHeader({ tool, initialHasVoted, initialIsFavorite, repoUrl }
 					<Button
 						onClick={handleFavorite}
 						variant="outline"
-						className={`cursor-pointer active:scale-95 flex-1 lg:flex-none inline-flex items-center justify-center gap-2 rounded-lg border-slate-800 px-6 py-5 sm:py-6 lg:py-3 h-auto text-sm font-semibold transition-all group ${
+						className={`cursor-pointer active:scale-95 flex-1 lg:flex-none inline-flex items-center justify-center gap-2 rounded-lg border-neutral-800 px-6 py-5 sm:py-6 lg:py-3 h-auto text-sm font-semibold transition-all group ${
 							optimisticIsFavorite
 								? "bg-rose-500/10 text-rose-500 border-rose-500/30 hover:bg-rose-500/20 hover:text-rose-400"
-								: "bg-slate-900/50 text-white hover:bg-slate-800/80 hover:text-white"
+								: "bg-neutral-900/50 text-white hover:bg-neutral-800/80 hover:text-white"
 						}`}
 					>
 						<Heart
 							className={`h-4 w-4 transition-all duration-300 ${
 								optimisticIsFavorite
 									? "fill-current scale-110 drop-shadow-[0_0_8px_rgba(244,63,94,0.5)]"
-									: "text-slate-400 group-hover:text-rose-400 group-hover:scale-110"
+									: "text-neutral-400 group-hover:text-rose-400 group-hover:scale-110"
 							}`}
 						/>
 						<span>{optimisticIsFavorite ? "Saved" : "Save"}</span>
@@ -179,17 +176,17 @@ export function ToolHeader({ tool, initialHasVoted, initialIsFavorite, repoUrl }
 					<Button
 						onClick={handleVote}
 						variant="outline"
-						className={`cursor-pointer active:scale-95 flex-1 lg:flex-none inline-flex items-center justify-center gap-2 rounded-lg border-slate-800 px-6 py-5 sm:py-6 lg:py-3 h-auto text-sm font-semibold transition-all group ${
+						className={`cursor-pointer active:scale-95 flex-1 lg:flex-none inline-flex items-center justify-center gap-2 rounded-lg border-neutral-800 px-6 py-5 sm:py-6 lg:py-3 h-auto text-sm font-semibold transition-all group ${
 							optimisticVoteData.hasVoted
 								? "bg-indigo-500/10 text-indigo-400 border-indigo-500/30 hover:bg-indigo-500/20 hover:text-indigo-300"
-								: "bg-slate-900/50 text-white hover:bg-slate-800/80 hover:text-white"
+								: "bg-neutral-900/50 text-white hover:bg-neutral-800/80 hover:text-white"
 						}`}
 					>
 						<ThumbsUp
 							className={`h-4 w-4 transition-all duration-300 ${
 								optimisticVoteData.hasVoted
 									? "fill-current scale-110 -rotate-12 drop-shadow-[0_0_8px_rgba(99,102,241,0.5)]"
-									: "text-slate-400 group-hover:-rotate-12 group-hover:scale-110"
+									: "text-neutral-400 group-hover:-rotate-12 group-hover:scale-110"
 							}`}
 						/>
 						<span>
@@ -200,7 +197,7 @@ export function ToolHeader({ tool, initialHasVoted, initialIsFavorite, repoUrl }
 			</div>
 
 			<Dialog open={showLoginDialog} onOpenChange={setShowLoginDialog}>
-				<DialogContent className="bg-[#0f172a] border-slate-800 text-white sm:max-w-md backdrop-blur-xl">
+				<DialogContent className="bg-neutral-900 border-neutral-800 text-white sm:max-w-md">
 					<DialogHeader>
 						<DialogTitle className="text-xl font-bold uppercase tracking-tight">
 							Login Required
@@ -226,7 +223,7 @@ export function ToolHeader({ tool, initialHasVoted, initialIsFavorite, repoUrl }
 						</Button>
 						<Button
 							variant="ghost"
-							className="text-slate-500 hover:text-white hover:bg-slate-800 uppercase tracking-widest text-[10px]"
+							className="text-neutral-500 hover:text-white hover:bg-neutral-800 uppercase tracking-widest text-[10px]"
 							onClick={() => setShowLoginDialog(false)}
 						>
 							Cancel

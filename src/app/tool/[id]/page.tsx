@@ -70,7 +70,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
 	return (
 		<main className="grow w-full container mx-auto px-4 py-8 animate-in fade-in duration-500">
 			{/* Breadcrumbs */}
-			<nav className="flex items-center gap-2 text-sm text-slate-400 mb-8">
+			<nav className="flex items-center gap-2 text-sm text-neutral-400 mb-8">
 				<Link href="/" className="hover:text-white transition-colors">
 					Home
 				</Link>
@@ -106,9 +106,9 @@ export default async function ToolPage({ params }: ToolPageProps) {
 				{/* Left Column: Description & Reviews */}
 				<div className="lg:col-span-2 space-y-8">
 					{/* Detailed Info */}
-					<div className="bg-[#0f172a]/60 backdrop-blur-xl border border-slate-800/50 rounded-xl p-8 shadow-xl">
+					<div className="bg-neutral-900/50 border border-neutral-800 rounded-xl p-8">
 						<h2 className="text-xl font-bold text-white mb-4">About {tool.title}</h2>
-						<div className="prose prose-invert prose-slate max-w-none text-slate-400 space-y-4">
+						<div className="prose prose-invert prose-slate max-w-none text-neutral-400 space-y-4">
 							<p className="leading-relaxed">
 								{tool.description ||
 									`This is the details page for ${tool.title}. Here you can find more information about its features and integrations.`}
@@ -117,7 +117,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
 					</div>
 
 					{/* Community Reviews Placeholder */}
-					<div className="bg-[#0f172a]/60 backdrop-blur-xl border border-slate-800/50 rounded-xl p-8 shadow-xl mt-8">
+					<div className="bg-neutral-900/50 border border-neutral-800 rounded-xl p-8 mt-8">
 						<div className="flex items-center justify-between mb-6">
 							<div className="flex items-center gap-2">
 								<MessageSquare className="h-5 w-5 text-indigo-400" />
@@ -130,15 +130,15 @@ export default async function ToolPage({ params }: ToolPageProps) {
 
 						<div className="space-y-6">
 							{/* Simulated Review 1 */}
-							<div className="border-b border-slate-800/50 pb-6 last:border-0 last:pb-0 opacity-70">
+							<div className="border-b border-neutral-800/50 pb-6 last:border-0 last:pb-0 opacity-70">
 								<div className="flex items-start justify-between mb-2">
 									<div className="flex items-center gap-3">
-										<div className="h-10 w-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-500">
+										<div className="h-10 w-10 rounded-full bg-neutral-800 flex items-center justify-center text-neutral-500">
 											<UserCircle className="h-6 w-6" />
 										</div>
 										<div>
 											<div className="text-sm font-semibold text-white">Web Developer</div>
-											<div className="text-xs text-slate-500">Web mention • Recently</div>
+											<div className="text-xs text-neutral-500">Web mention • Recently</div>
 										</div>
 									</div>
 									<div className="flex text-yellow-500 text-xs">
@@ -149,7 +149,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
 										<Star className="h-4 w-4 fill-current" />
 									</div>
 								</div>
-								<p className="text-sm text-slate-400 leading-relaxed pl-13">
+								<p className="text-sm text-neutral-400 leading-relaxed pl-13">
 									"I've been using {tool.title} for a few months now and it has completely
 									transformed my workflow. The integration is seamless and the community is
 									amazing."
@@ -157,15 +157,15 @@ export default async function ToolPage({ params }: ToolPageProps) {
 							</div>
 
 							{/* Simulated Review 2 */}
-							<div className="border-b border-slate-800/50 pb-6 last:border-0 last:pb-0 opacity-70">
+							<div className="border-b border-neutral-800/50 pb-6 last:border-0 last:pb-0 opacity-70">
 								<div className="flex items-start justify-between mb-2">
 									<div className="flex items-center gap-3">
-										<div className="h-10 w-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-500">
+										<div className="h-10 w-10 rounded-full bg-neutral-800 flex items-center justify-center text-neutral-500">
 											<UserCircle className="h-6 w-6" />
 										</div>
 										<div>
 											<div className="text-sm font-semibold text-white">Software Engineer</div>
-											<div className="text-xs text-slate-500">Web mention • Recently</div>
+											<div className="text-xs text-neutral-500">Web mention • Recently</div>
 										</div>
 									</div>
 									<div className="flex text-yellow-500 text-xs">
@@ -176,7 +176,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
 										<Star className="h-4 w-4" />
 									</div>
 								</div>
-								<p className="text-sm text-slate-400 leading-relaxed pl-13">
+								<p className="text-sm text-neutral-400 leading-relaxed pl-13">
 									"Solid alternative to other tools in the {tool.category.name} space. The ecosystem
 									around it is very active and helpful. Highly recommended!"
 								</p>
@@ -188,21 +188,29 @@ export default async function ToolPage({ params }: ToolPageProps) {
 				{/* Right Column: Sidebar Metadata */}
 				<div className="space-y-6">
 					{/* Tool Info Card */}
-					<div className="bg-[#0f172a]/60 backdrop-blur-xl border border-slate-800/50 rounded-xl p-6 shadow-xl">
+					<div className="bg-neutral-900/50 border border-neutral-800 rounded-xl p-6">
 						<div>
-							<h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">
+							<h3 className="text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-3">
 								Stats
 							</h3>
 
-							<div className="flex items-center justify-between py-2 border-b border-slate-800/50">
-								<span className="text-sm text-slate-400">Pricing</span>
-								<span className="inline-flex items-center rounded-md bg-slate-800 px-2 py-1 text-xs font-medium text-white ring-1 ring-inset ring-slate-700/50">
-									{tool.pricing}
+							<div className="flex items-center justify-between py-2 border-b border-neutral-800/50">
+								<span className="text-sm text-neutral-400">Pricing</span>
+								<span
+									className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset uppercase tracking-wider ${
+										tool.pricing === "FREE"
+											? "bg-emerald-500/10 text-emerald-400 ring-emerald-500/20"
+											: tool.pricing === "FREEMIUM"
+												? "bg-amber-500/10 text-amber-400 ring-amber-500/20"
+												: "bg-rose-500/10 text-rose-400 ring-rose-500/20"
+									}`}
+								>
+									{tool.pricing.toLowerCase()}
 								</span>
 							</div>
 
-							<div className="flex items-center justify-between py-2 border-b border-slate-800/50">
-								<span className="text-sm text-slate-400">Subcategory</span>
+							<div className="flex items-center justify-between py-2 border-b border-neutral-800/50">
+								<span className="text-sm text-neutral-400">Subcategory</span>
 								<span className="text-sm font-medium text-white capitalize">
 									{tool.subCategory.name}
 								</span>
@@ -210,8 +218,8 @@ export default async function ToolPage({ params }: ToolPageProps) {
 
 							{githubStats && (
 								<>
-									<div className="flex items-center justify-between py-2 border-b border-slate-800/50">
-										<span className="text-sm text-slate-400">Stars</span>
+									<div className="flex items-center justify-between py-2 border-b border-neutral-800/50">
+										<span className="text-sm text-neutral-400">Stars</span>
 										<div className="flex items-center gap-1 text-sm font-medium text-white">
 											<Star className="h-4 w-4 text-yellow-500 fill-yellow-500/20" />
 											{githubStats.stars >= 1000
@@ -219,27 +227,27 @@ export default async function ToolPage({ params }: ToolPageProps) {
 												: githubStats.stars}
 										</div>
 									</div>
-									<div className="flex items-center justify-between py-2 border-b border-slate-800/50">
-										<span className="text-sm text-slate-400">Forks</span>
+									<div className="flex items-center justify-between py-2 border-b border-neutral-800/50">
+										<span className="text-sm text-neutral-400">Forks</span>
 										<div className="flex items-center gap-1 text-sm font-medium text-white">
-											<GitFork className="h-4 w-4 text-slate-400" />
+											<GitFork className="h-4 w-4 text-neutral-400" />
 											{githubStats.forks >= 1000
 												? (githubStats.forks / 1000).toFixed(1) + "k"
 												: githubStats.forks}
 										</div>
 									</div>
-									<div className="flex items-center justify-between py-2 border-b border-slate-800/50">
-										<span className="text-sm text-slate-400">Issues</span>
+									<div className="flex items-center justify-between py-2 border-b border-neutral-800/50">
+										<span className="text-sm text-neutral-400">Issues</span>
 										<div className="flex items-center gap-1 text-sm font-medium text-white">
-											<AlertCircle className="h-4 w-4 text-slate-400" />
+											<AlertCircle className="h-4 w-4 text-neutral-400" />
 											{githubStats.openIssues >= 1000
 												? (githubStats.openIssues / 1000).toFixed(1) + "k"
 												: githubStats.openIssues}
 										</div>
 									</div>
 									{githubStats.npmDownloads && (
-										<div className="flex items-center justify-between py-2 border-b border-slate-800/50">
-											<span className="text-sm text-slate-400">NPM Weekly</span>
+										<div className="flex items-center justify-between py-2 border-b border-neutral-800/50">
+											<span className="text-sm text-neutral-400">NPM Weekly</span>
 											<div className="flex items-center gap-1 text-sm font-medium text-white">
 												<Download className="h-4 w-4 text-indigo-400" />
 												{githubStats.npmDownloads >= 1000000
@@ -251,10 +259,10 @@ export default async function ToolPage({ params }: ToolPageProps) {
 										</div>
 									)}
 									{githubStats.license && (
-										<div className="flex items-center justify-between py-2 border-b border-slate-800/50">
-											<span className="text-sm text-slate-400">License</span>
+										<div className="flex items-center justify-between py-2 border-b border-neutral-800/50">
+											<span className="text-sm text-neutral-400">License</span>
 											<div className="flex items-center gap-1 text-sm font-medium text-white">
-												<BookOpen className="h-4 w-4 text-slate-400" />
+												<BookOpen className="h-4 w-4 text-neutral-400" />
 												<span className="max-w-30 truncate" title={githubStats.license}>
 													{githubStats.license}
 												</span>
@@ -265,7 +273,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
 							)}
 
 							<div className="flex items-center justify-between py-2">
-								<span className="text-sm text-slate-400">Released</span>
+								<span className="text-sm text-neutral-400">Released</span>
 								<span className="text-sm font-medium text-white">
 									{new Intl.DateTimeFormat("en-US", {
 										month: "short",
@@ -279,7 +287,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
 
 						{tool.stack.length > 0 && (
 							<div className="mt-6">
-								<h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">
+								<h3 className="text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-3">
 									Technologies
 								</h3>
 								<div className="flex flex-wrap gap-2">
@@ -298,7 +306,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
 
 					{/* Alternatives */}
 					{alternatives.length > 0 && (
-						<div className="bg-[#0f172a]/60 backdrop-blur-xl border border-slate-800/50 rounded-xl p-6 shadow-xl">
+						<div className="bg-neutral-900/50 border border-neutral-800 rounded-xl p-6">
 							<div className="flex items-center justify-between mb-4">
 								<h3 className="text-sm font-semibold text-white">Alternatives</h3>
 							</div>
@@ -311,7 +319,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
 											href={`/tool/${alt.id}`}
 											className="flex items-start gap-3 group"
 										>
-											<div className="h-10 w-10 rounded-lg bg-slate-800/80 flex items-center justify-center text-white font-bold text-lg shrink-0 group-hover:scale-105 transition-transform duration-300 ring-1 ring-inset ring-slate-700/50">
+											<div className="h-10 w-10 rounded-lg bg-neutral-800/80 flex items-center justify-center text-white font-bold text-lg shrink-0 group-hover:scale-105 transition-transform duration-300 ring-1 ring-inset ring-neutral-700/50">
 												{altLetter}
 											</div>
 											<div className="min-w-0 flex-1">
@@ -319,11 +327,11 @@ export default async function ToolPage({ params }: ToolPageProps) {
 													<h4 className="text-sm font-medium text-white group-hover:text-indigo-400 transition-colors truncate">
 														{alt.title}
 													</h4>
-													<span className="text-[10px] text-slate-400 bg-slate-800/80 px-1.5 py-0.5 rounded uppercase font-medium ring-1 ring-inset ring-slate-700/50">
+													<span className="text-[10px] text-neutral-400 bg-neutral-800/80 px-1.5 py-0.5 rounded uppercase font-medium ring-1 ring-inset ring-neutral-700/50">
 														{alt.pricing}
 													</span>
 												</div>
-												<p className="text-xs text-slate-400 truncate mt-0.5">
+												<p className="text-xs text-neutral-400 truncate mt-0.5">
 													{alt.description || "Discover this alternative tool."}
 												</p>
 											</div>
