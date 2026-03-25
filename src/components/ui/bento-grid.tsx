@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Bookmark, Crown, ExternalLink, Heart } from "lucide-react";
+import { Bookmark, Crown, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./button";
@@ -111,9 +111,9 @@ export const BentoGridItem = ({
 				<Button
 					onClick={handleFavorite}
 					disabled={isFavoriting}
-					className={`p-2 rounded-lg border border-neutral-800 bg-neutral-900 transition-colors hover:border-rose-500/50 hover:bg-rose-500/10 group/fav ${isFavorite ? "text-rose-500 border-rose-500/50 bg-rose-500/10" : "text-neutral-500"}`}
+					className={`p-2 rounded-lg border border-neutral-800 bg-neutral-900 hover:border-rose-500/50 hover:bg-rose-500/10 group/fav ${isFavorite ? "text-rose-500 border-rose-500/50 bg-rose-500/10" : "text-neutral-500"}`}
 				>
-					<Heart className={`h-4 w-4 ${isFavorite ? "fill-current" : ""}`} />
+					<Bookmark className={`h-4 w-4 ${isFavorite ? "fill-current" : ""}`} />
 				</Button>
 			</div>
 

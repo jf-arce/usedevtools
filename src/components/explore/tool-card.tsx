@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Heart, ThumbsUp, Globe } from "lucide-react";
+import { ArrowRight, Bookmark, ThumbsUp, Globe } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { PricingType } from "@prisma/generated";
@@ -117,9 +117,9 @@ export function ToolCard({ tool }: ToolCardProps) {
 							<Button
 								onClick={handleFavorite}
 								disabled={isFavoriting}
-								className={`p-2 rounded-lg border border-neutral-800 bg-neutral-900 transition-colors hover:border-rose-500/50 hover:bg-rose-500/10 group/fav ${isFavorite ? "text-rose-500 border-rose-500/50 bg-rose-500/10" : "text-neutral-500"}`}
+								className={`p-2 rounded-lg border border-neutral-800 bg-neutral-900 hover:border-rose-500/50 hover:bg-rose-500/10 group/fav ${isFavorite ? "text-rose-500 border-rose-500/50 bg-rose-500/10" : "text-neutral-500"}`}
 							>
-								<Heart className={`h-4 w-4 ${isFavorite ? "fill-current" : ""}`} />
+								<Bookmark className={`h-4 w-4 ${isFavorite ? "fill-current" : ""}`} />
 							</Button>
 						</div>
 					</div>

@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect, useTransition } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Heart, UploadCloud, SlidersHorizontal } from "lucide-react";
+import { Search, Bookmark, UploadCloud, SlidersHorizontal } from "lucide-react";
 import { ToolCard } from "@/components/explore/tool-card";
 import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -130,7 +130,7 @@ export function DashboardClient({
 
 					<TabsList className="shrink-0">
 						<TabsTrigger value="favorites">
-							<Heart className="w-4 h-4 mr-2" />
+							<Bookmark className="w-4 h-4 mr-2 text-rose-500" />
 							Favorites ({favoritesCount})
 						</TabsTrigger>
 						<TabsTrigger value="uploads">
@@ -281,7 +281,7 @@ export function DashboardClient({
 				<Card className="border-dashed bg-transparent shadow-none">
 					<CardContent className="flex flex-col items-center justify-center p-12 text-center text-muted-foreground h-64">
 						{currentTab === "favorites" ? (
-							<Heart className="h-10 w-10 mb-4 opacity-20" />
+							<Bookmark className="h-10 w-10 mb-4 opacity-20 text-rose-500" />
 						) : (
 							<UploadCloud className="h-10 w-10 mb-4 opacity-20" />
 						)}

@@ -1,6 +1,6 @@
 import {
 	Eye,
-	Heart,
+	Bookmark,
 	ThumbsUp,
 	Globe,
 	ArrowRight,
@@ -52,7 +52,7 @@ export function PreviewSidebar({ formData }: PreviewSidebarProps) {
 
 							<div className="flex gap-2">
 								<div className="p-2 rounded-lg border border-neutral-800 bg-neutral-900 text-neutral-500 cursor-default">
-									<Heart className="h-3.5 w-3.5" />
+									<Bookmark className="h-3.5 w-3.5" />
 								</div>
 							</div>
 						</div>

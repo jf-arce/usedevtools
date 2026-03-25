@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { PlusCircle, Heart, UploadCloud, Star, Search, SlidersHorizontal } from "lucide-react";
+import { PlusCircle, Bookmark, UploadCloud, Star, Search, SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -29,11 +29,11 @@ export default function DashboardLoading() {
 			<div className="grid gap-4 md:grid-cols-3">
 				<Card className="bg-linear-to-br from-card to-card/50 overflow-hidden relative">
 					<div className="absolute -right-4 -bottom-4 opacity-5">
-						<Heart className="w-32 h-32" />
+						<Bookmark className="w-32 h-32" />
 					</div>
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
 						<CardTitle className="text-sm font-medium">Saved Favorites</CardTitle>
-						<Heart className="h-4 w-4 text-rose-500" />
+						<Bookmark className="h-4 w-4 text-rose-500" />
 					</CardHeader>
 					<CardContent className="relative z-10">
 						<Skeleton className="h-9 w-16 mb-1 rounded-md" />
@@ -83,7 +83,7 @@ export default function DashboardLoading() {
 
 						<TabsList className="shrink-0">
 							<TabsTrigger value="favorites" disabled className="flex items-center">
-								<Heart className="w-4 h-4 mr-2" />
+								<Bookmark className="w-4 h-4 mr-2" />
 								Favorites <Skeleton className="h-3 w-4 ml-2 rounded-sm" />
 							</TabsTrigger>
 							<TabsTrigger value="uploads" disabled className="flex items-center">

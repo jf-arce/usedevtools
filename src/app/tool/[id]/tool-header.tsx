@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowUpRight, Heart, ThumbsUp, Github } from "lucide-react";
+import { ArrowUpRight, Bookmark, ThumbsUp, Github } from "lucide-react";
 import { useState, useTransition, useOptimistic } from "react";
 import { toggleVoteAction, toggleFavoriteAction } from "@/actions/tool-interactions";
 import { useGetFaviconUrl } from "@/hooks/use-get-favicon-url";
@@ -168,8 +168,8 @@ export function ToolHeader({ tool, initialHasVoted, initialIsFavorite, repoUrl }
 								: "bg-neutral-900/50 text-white hover:bg-neutral-800/80 hover:text-white"
 						}`}
 					>
-						<Heart
-							className={`h-4 w-4 transition-all duration-300 ${
+						<Bookmark
+							className={`h-4 w-4 transition-all ${
 								optimisticIsFavorite
 									? "fill-current scale-110 drop-shadow-[0_0_8px_rgba(244,63,94,0.5)]"
 									: "text-neutral-400 group-hover:text-rose-400 group-hover:scale-110"
@@ -190,7 +190,7 @@ export function ToolHeader({ tool, initialHasVoted, initialIsFavorite, repoUrl }
 							className={`h-4 w-4 transition-all duration-300 ${
 								optimisticVoteData.hasVoted
 									? "fill-current scale-110 -rotate-12 drop-shadow-[0_0_8px_rgba(99,102,241,0.5)]"
-									: "text-neutral-400 group-hover:-rotate-12 group-hover:scale-110"
+									: "text-neutral-400 group-hover:text-indigo-400 group-hover:-rotate-12 group-hover:scale-110"
 							}`}
 						/>
 						<span>

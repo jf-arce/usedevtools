@@ -4,7 +4,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, Heart, UploadCloud, Star } from "lucide-react";
+import { PlusCircle, Bookmark, UploadCloud, Star } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { DashboardClient } from "./dashboard-client";
 import { getTools } from "@/data/get-tools";
@@ -93,11 +93,11 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 			<div className="grid gap-4 md:grid-cols-3">
 				<Card className="bg-linear-to-br from-card to-card/50 overflow-hidden relative">
 					<div className="absolute -right-4 -bottom-4 opacity-5">
-						<Heart className="w-32 h-32" />
+						<Bookmark className="w-32 h-32" />
 					</div>
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
 						<CardTitle className="text-sm font-medium">Saved Favorites</CardTitle>
-						<Heart className="h-4 w-4 text-rose-500" />
+						<Bookmark className="h-4 w-4 text-rose-500" />
 					</CardHeader>
 					<CardContent className="relative z-10">
 						<div className="text-3xl font-bold">{favoritesCount}</div>
