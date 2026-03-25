@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PlusCircle, Bookmark, UploadCloud, Star } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { DashboardClient } from "./dashboard-client";
+import { DashboardClient } from "@/components/dashboard/dashboard-client";
 import { getTools } from "@/data/get-tools";
 import { ExplorePagination } from "@/components/explore/explore-pagination";
 
@@ -97,7 +97,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 					</div>
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
 						<CardTitle className="text-sm font-medium">Saved Favorites</CardTitle>
-						<Bookmark className="h-4 w-4 text-rose-500" />
+						<Bookmark className="h-4 w-4 text-white" />
 					</CardHeader>
 					<CardContent className="relative z-10">
 						<div className="text-3xl font-bold">{favoritesCount}</div>

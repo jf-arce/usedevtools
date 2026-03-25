@@ -130,7 +130,7 @@ export function DashboardClient({
 
 					<TabsList className="shrink-0">
 						<TabsTrigger value="favorites">
-							<Bookmark className="w-4 h-4 mr-2 text-rose-500" />
+							<Bookmark className="w-4 h-4 mr-2 text-white" />
 							Favorites ({favoritesCount})
 						</TabsTrigger>
 						<TabsTrigger value="uploads">
@@ -281,7 +281,7 @@ export function DashboardClient({
 				<Card className="border-dashed bg-transparent shadow-none">
 					<CardContent className="flex flex-col items-center justify-center p-12 text-center text-muted-foreground h-64">
 						{currentTab === "favorites" ? (
-							<Bookmark className="h-10 w-10 mb-4 opacity-20 text-rose-500" />
+							<Bookmark className="h-10 w-10 mb-4 opacity-20 text-white" />
 						) : (
 							<UploadCloud className="h-10 w-10 mb-4 opacity-20" />
 						)}

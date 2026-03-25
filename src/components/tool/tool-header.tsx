@@ -164,15 +164,15 @@ export function ToolHeader({ tool, initialHasVoted, initialIsFavorite, repoUrl }
 						variant="outline"
 						className={`cursor-pointer active:scale-95 flex-1 lg:flex-none inline-flex items-center justify-center gap-2 rounded-lg border-neutral-800 px-6 py-5 sm:py-6 lg:py-3 h-auto text-sm font-semibold transition-all group ${
 							optimisticIsFavorite
-								? "bg-rose-500/10 text-rose-500 border-rose-500/30 hover:bg-rose-500/20 hover:text-rose-400"
+								? "bg-neutral-800 text-white border-neutral-600 hover:bg-neutral-700 hover:text-white"
 								: "bg-neutral-900/50 text-white hover:bg-neutral-800/80 hover:text-white"
 						}`}
 					>
 						<Bookmark
 							className={`h-4 w-4 transition-all ${
 								optimisticIsFavorite
-									? "fill-current scale-110 drop-shadow-[0_0_8px_rgba(244,63,94,0.5)]"
-									: "text-neutral-400 group-hover:text-rose-400 group-hover:scale-110"
+									? "fill-current text-white scale-110"
+									: "text-neutral-400 group-hover:text-white group-hover:scale-110"
 							}`}
 						/>
 						<span>{optimisticIsFavorite ? "Saved" : "Save"}</span>

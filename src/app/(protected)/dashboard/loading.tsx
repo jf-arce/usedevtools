@@ -33,7 +33,7 @@ export default function DashboardLoading() {
 					</div>
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
 						<CardTitle className="text-sm font-medium">Saved Favorites</CardTitle>
-						<Bookmark className="h-4 w-4 text-rose-500" />
+						<Bookmark className="h-4 w-4 text-white" />
 					</CardHeader>
 					<CardContent className="relative z-10">
 						<Skeleton className="h-9 w-16 mb-1 rounded-md" />
